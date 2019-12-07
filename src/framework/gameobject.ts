@@ -133,6 +133,7 @@ export class GameObject{
 }
 
 export class Player extends GameObject{
+    
     constructor(){
         super()
         this.type = this.collisionType = "player"
@@ -143,8 +144,8 @@ export class Player extends GameObject{
     update(){
         // will emit particles
         super.update()
-        this.vel.x = 10* fw.input.joystick.x
-        this.vel.y = 10* fw.input.joystick.y
+        this.vel.x = 5* fw.input.joystick.x
+        this.vel.y = 5* fw.input.joystick.y
         if(this.checkCollision("enemy").length  > 0 ||
            this.checkCollision("bullet").length > 0){
            this.dealDamage()

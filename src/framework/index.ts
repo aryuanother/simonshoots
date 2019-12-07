@@ -13,7 +13,7 @@ export let ticks = 0
 export let score = 0
 export let random: Random
 export let scene: Scene
-export let targetFramerate = 30
+export let targetFramerate = 60
 export let canvas: HTMLCanvasElement
 export let context: CanvasRenderingContext2D
 export let width:number, height:number

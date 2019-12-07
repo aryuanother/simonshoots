@@ -29,8 +29,8 @@ export function shootNWay(gobj:GameObject, way:number, spreadAngle:number, aimAn
 export function jetshot(e){
     let rg = new Random()
     rg.setSeed(213427823147)
-    let aa = [...Array(20)].map(()=>rg.get(88*Math.PI/180,92*Math.PI/180))
-    let sa = [...Array(20)].map(()=>rg.getInt(50,100)/10)
+    let aa = [...Array(20)].map(()=>rg.get(85*Math.PI/180,95*Math.PI/180))
+    let sa = [...Array(20)].map(()=>rg.getInt(25,50)/10)
     e.pos.x -=56
     for(let i = 0; i < 20; i++){
         shootNWay(e, 1, 0, aa[i], "Fixed", 1, sa[i])
