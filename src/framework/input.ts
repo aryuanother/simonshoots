@@ -1,7 +1,7 @@
 export let joystick = {x: 0, y: 0}
 export let justReleased = false
 export let justPressed = false
-let keystate = {}
+export let keystate = {}
 
 export function init(){
     document.onkeydown = e=>{

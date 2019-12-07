@@ -15,7 +15,7 @@ export class GameObject{
     type: string
     isAlive = true
     isActive = true
-    showCollision = !true
+    static showCollision = !true
     collision = {r:0, /*w:0, h:0*/}
     collisionType :string = ""
     component: fw.Component[] = []
@@ -74,7 +74,7 @@ export class GameObject{
         this.context.drawImage(this.image, -(this.image.width/2), -(this.image.height/2))
         this.context.restore()
 
-        if(this.showCollision){
+        if(GameObject.showCollision){
             let originFillStyle = this.context.fillStyle
             this.context.fillStyle = "rgba(255,0,0,63)"
             this.context.beginPath()

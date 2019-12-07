@@ -63,6 +63,7 @@ function mainLoop(){
 function update(){
     context.fillRect(0,0,width,height)
     switchScene()
+    GameObject.showCollision = input.keystate["s"]
     // will play sounds
     if(!!_update) _update()
     // will update global components
