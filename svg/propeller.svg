@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="502" height="500" version="1" viewBox="0 0 133 132">
+  <defs>
+    <radialGradient id="a" cx="106" cy="234" r="7" gradientTransform="translate(-4 54) scale(.67047)" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#bbc6bf"/>
+      <stop offset="1" stop-color="#818181"/>
+    </radialGradient>
+  </defs>
+  <g transform="translate(-1 -144)">
+    <path fill="#c4c2cf" d="M131 228a66 66 0 0 1-7 16l-57-34z"/>
+    <path fill="#b9b7c7" d="M124 244a66 66 0 0 1-11 14l-46-48z"/>
+    <path fill="#d1d0da" stroke="#000" stroke-linejoin="round" d="M134 210a66 66 0 0 1-3 18l-64-18z"/>
+    <path fill="#9d9ab0" d="M113 258a66 66 0 0 1-14 10l-32-58z"/>
+    <path fill="#88849f" d="M99 268a66 66 0 0 1-17 7l-15-65z"/>
+    <path fill="#6d6986" d="M82 275a66 66 0 0 1-17 1l2-66z"/>
+    <path fill="none" d="M65 276a66 66 0 0 1-18-3l20-63z"/>
+    <path fill="none" d="M47 273a66 66 0 0 1-16-7l36-56z"/>
+    <path fill="#c4c2cf" d="M4 193a66 66 0 0 1 7-17l56 34z"/>
+    <path fill="#b9b7c7" d="M11 176a66 66 0 0 1 11-13l45 47z"/>
+    <path fill="#d1d0da" stroke="#000" stroke-linejoin="round" d="M1 210a66 66 0 0 1 3-17l63 17z"/>
+    <path fill="#9d9ab0" d="M22 163a66 66 0 0 1 14-11l31 58z"/>
+    <path fill="#88849f" d="M36 152a66 66 0 0 1 16-6l15 64z"/>
+    <path fill="#6d6986" d="M52 146a66 66 0 0 1 18-2l-3 66z"/>
+    <path fill="none" d="M70 144a66 66 0 0 1 17 3l-20 63zM87 147a66 66 0 0 1 16 8l-36 55z"/>
+    <circle cx="68" cy="210" r="7" fill="#607668"/>
+    <circle cx="68" cy="210" r="4" fill="url(#a)"/>
+  </g>
+</svg>

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="460.1" height="464.4" viewBox="0 0 121.8 122.9">
+  <defs>
+    <linearGradient id="b">
+      <stop offset="0" stop-color="#f4643e"/>
+      <stop offset="1" stop-color="#eed478" stop-opacity=".6"/>
+    </linearGradient>
+    <linearGradient id="a">
+      <stop offset="0" stop-color="#e6ffff"/>
+      <stop offset="1" stop-color="#e6ffff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="d" cx="67.9" cy="195.9" r="7.3" fx="67.9" fy="195.9" gradientTransform="matrix(3.77953 0 0 3.43593 0 -543.2)" gradientUnits="userSpaceOnUse" xlink:href="#a"/>
+    <radialGradient id="c" cx="-31.2" cy="204.9" r="34.1" fx="-31.2" fy="204.9" gradientTransform="translate(95.4 190) scale(.42578)" gradientUnits="userSpaceOnUse" xlink:href="#b"/>
+    <radialGradient id="e" cx="-31.2" cy="204.9" r="34.1" fx="-31.2" fy="204.9" gradientTransform="translate(-40.5 190) scale(.42578)" gradientUnits="userSpaceOnUse" xlink:href="#b"/>
+  </defs>
+  <g transform="translate(-7.1 -168.8)">
+    <path fill="#907d78" stroke="#000" stroke-linejoin="round" stroke-width=".5" d="M75.9 272.7a7.6 14.8 0 0 1 1.7-18.8 7.6 14.8 0 0 1 9.8 0 7.6 14.8 0 0 1 1.6 19"/>
+    <circle cx="82.2" cy="277.3" r="14.4" fill="url(#c)"/>
+    <path fill="none" stroke="#000" stroke-width=".5" d="M75.9 272.7l13 .1m-14-6.8H90m-14.7-5.5h14"/>
+    <path fill="#907d78" stroke="#000" stroke-linejoin="round" stroke-width=".5" d="M60.1 272.7a7.6 14.8 0 0 0-1.7-18.8 7.6 14.8 0 0 0-9.8 0 7.6 14.8 0 0 0-1.6 19"/>
+    <path fill="#d1dede" stroke="#000" stroke-width=".5" d="M67.6 224.2h-.4c-19.6.3-39.5 8.3-49.6 14.7-10.4 6.5-10.5 11.4-10.1 14 .4 2.6 1.5 3 20.8 3l39.7-.3 39.7.3c19.3 0 20.4-.4 20.8-3 .4-2.6.3-7.5-10-14-10.2-6.4-30-14.4-49.7-14.7z"/>
+    <path fill="#e74921" stroke="#000" stroke-linejoin="round" stroke-width=".5" d="M59.2 181c-2.7 5.8-5.7 12-7.4 20.7-1 8.1 0 16.8.7 24.8 1.2 10.4 2.4 21.3 4.9 29.8 2 5.4 5 5.5 7.7 6.4l2.1.2v.1a20 20 0 0 0 1.6 0l2.1-.3c2.6-.9 5.7-1 7.7-6.4 2.5-8.5 3.7-19.4 4.9-29.8.6-8 1.6-16.7.7-24.8-1.7-8.8-4.7-14.9-7.4-20.8-8.6-15.9-9.2-15.7-17.6 0z"/>
+    <path fill="#8ccdcd" stroke="#000" stroke-linejoin="round" stroke-width=".5" d="M67.8 176c-3 0-12 24.4-10.3 28.2.7 2 5.6 2.8 10.5 2.7 5 .1 9.8-.8 10.5-2.7 1.6-3.8-7.3-28.2-10.3-28.2H68z"/>
+    <path fill="url(#d)" d="M256.5 106a26.5 24 0 0 0-1.5 0v.1a26.5 24 0 0 0-24 23.9 26.5 24 0 0 0 24 23.9 26.5 24 0 0 0 1.5.1 26.5 24 0 0 0 .5 0 26.5 24 0 0 0 .5 0 26.5 24 0 0 0 1.5 0v-.1a26.5 24 0 0 0 24-23.9 26.5 24 0 0 0-24-23.9 26.5 24 0 0 0-1.5-.1 26.5 24 0 0 0-.5 0 26.5 24 0 0 0-.5 0z" transform="translate(0 161.5) scale(.26458)"/>
+    <rect width="19.6" height="61.9" x="88.9" y="210.2" fill="#d1dede" stroke="#000" stroke-linejoin="round" stroke-width="1.1" ry="4.8"/>
+    <rect width="9.8" height="64" x="93.7" y="202" fill="#3e5656" stroke="#000" stroke-linejoin="round" stroke-width="1.1" ry="4.8"/>
+    <circle cx="-53.8" cy="277.3" r="14.4" fill="url(#e)" transform="scale(-1 1)"/>
+    <path fill="none" stroke="#000" stroke-width=".5" d="M60.1 272.7l-13 .1m14-6.8H46m14.7-5.5h-14"/>
+    <rect width="19.6" height="61.9" x="-47.1" y="210.2" fill="#d1dede" stroke="#000" stroke-linejoin="round" stroke-width="1.1" ry="4.8" transform="scale(-1 1)"/>
+    <rect width="9.8" height="64" x="-42.3" y="202" fill="#3e5656" stroke="#000" stroke-linejoin="round" stroke-width="1.1" ry="4.8" transform="scale(-1 1)"/>
+  </g>
+</svg>
