@@ -4,7 +4,7 @@ export let justPressed = false
 export let keystate = {}
 let mousex:number, mousey:number
 let px:number, py:number
-let dragging:boolean
+let dragging:boolean, pd:boolean
 export function init(){
     document.onkeydown = e=>{
         if(e.repeat) return
@@ -53,7 +53,7 @@ export function init(){
     justPressed = false
     keystate = {}
     
-    dragging = false
+    dragging = pd = false
 }
 export function update(){
     const pjm = joystick.x**2+joystick.y**2
@@ -77,6 +77,7 @@ export function update(){
         joystick.x /= jmrt
         joystick.y /= jmrt
     }
-    justReleased = jm == 0 && pjm != 0
-    justPressed = jm != 0 && pjm == 0
+    justReleased = !dragging && jm == 0 && pjm != 0
+    justPressed = !pd && jm != 0 && pjm == 0
+    pd = dragging
 }
