@@ -2,7 +2,7 @@ import * as fw from "./framework/index"
 import {GameObject, DoUnderCondition, MoveTo } from "./framework/index"
 import _ = require("lodash")
 import { ZakoHeli, player, EnemyWithToughness } from "./gobj"
-import { shootNWay, jetshot } from "./firecontrol"
+import { shootNWay, jetshot, penaltyshot_upper } from "./firecontrol"
 import { svg } from "./svg"
 
 export function enemy1(ax:number, ay:number,
@@ -69,9 +69,12 @@ export function enemy3(x:number, y:number){
                     (Math.PI/2)+(leftside?-1:1)*(2*Math.PI/5)*(c.gobj.ticks-20)/60,
                     "Fixed", 2,2.5+(c.gobj.ticks-20)/12)
             }
+            if(c.gobj.ticks == 60){
+                c.gobj.vel.y = -3
+            }
         },
         (c)=>{
-            return c.gobj.ticks >= 20 && c.gobj.ticks < 60
+            return c.gobj.ticks >= 20 && c.gobj.ticks <= 60
         })
     })
 }
@@ -131,14 +134,27 @@ export function enemy5(x:number, y:number){
                 jetshot(gobj)
                 gobj.vel.x = 0
                 gobj.vel.y = -2.5
-                gobj.clearComponent()
             },
             (c)=>{
                 return c.gobj.ticks == 60
             })
+            new DoUnderCondition(e, (c)=>{
+                let gobj = c.gobj
+                if(gobj.ticks%10 == 0) penaltyshot_upper(gobj)
+            },
+            (c)=>{
+                return c.gobj.pos.y > player.pos.y
+            })
         },
         (c)=>{
             return c.gobj.ticks == 120
+        })
+        new DoUnderCondition(e, (c)=>{
+            let gobj = c.gobj
+            if(gobj.ticks%10 == 0) penaltyshot_upper(gobj)
+        },
+        (c)=>{
+            return c.gobj.pos.y > player.pos.y
         })
     }).toughness = 180
 }
@@ -157,10 +173,16 @@ export function enemy6(ax:number, ay:number,
             jetshot(gobj)
             gobj.vel.x = 0
             gobj.vel.y = -2.5
-            gobj.clearComponent()
         },
         (c)=>{
             return c.gobj.ticks == mt+wt
+        })
+        new DoUnderCondition(e, (c)=>{
+            let gobj = c.gobj
+            if(gobj.ticks%10 == 0) penaltyshot_upper(gobj)
+        },
+        (c)=>{
+            return c.gobj.pos.y > player.pos.y
         })
         
     }).toughness = 180

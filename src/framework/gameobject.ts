@@ -9,7 +9,7 @@ export class GameObject{
     angle = 0
     speed = 0
     ticks = 0
-    priority = 0
+    priority = 1
     image : HTMLCanvasElement | null = null
     scale = {x:1.0, y:1.0}
     type: string
@@ -105,7 +105,7 @@ export class GameObject{
         GameObject.gobj = []
     }
     static update(){
-        _.sortBy(GameObject.gobj, "priority")
+        GameObject.gobj = _.sortBy(GameObject.gobj, "priority")
         for(let i = 0; i < GameObject.gobj.length;){
             const obj = GameObject.gobj[i]
             if(obj.isAlive !==false && obj.isActive !== false){

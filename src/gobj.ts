@@ -89,20 +89,23 @@ export class Explosion extends fw.GameObject{
 }
 
 export class Shot extends fw.Shot{
-    damage = 1
+    damage = 1.5
     constructor(gobj:GameObject, speed?:number, angle?:number){
         super(gobj, speed, angle)
         this.image = svg["shot"]
         this.collision.r = 10
+        this.priority = 0.3
     }
     update(){
         if(this.ticks == 1)
             new Muzzle(this.pos.x, this.pos.y, this.image.width*2, 10)
+        if(this.ticks == 5)
+            this.damage = 1
         super.update()
     }
     dealDamage(val?:number){
         super.dealDamage(val)
-        new Explosion(this, this.pos.x, this.pos.y, 0, 0, 10)
+        new Explosion(this, this.pos.x, this.pos.y, 0, this.damage != 1 ?-2:0, 10*this.damage)
     }
 }
 
@@ -112,6 +115,7 @@ export class Enemy extends fw.Enemy{
     constructor(f:(e:Enemy)=>void){
         super();
         f(this)
+        this.priority = 0.3
     }
     dealDamage(val?:number){
         if(0 <= this.pos.x && this.pos.x <= fw.width &&

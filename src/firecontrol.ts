@@ -31,6 +31,7 @@ export function jetshot(e){
     rg.setSeed(213427823147)
     let aa = [...Array(20)].map(()=>rg.get(85*Math.PI/180,95*Math.PI/180))
     let sa = [...Array(20)].map(()=>rg.getInt(25,50)/10)
+    let px = e.pos.x
     e.pos.x -=56
     for(let i = 0; i < 20; i++){
         shootNWay(e, 1, 0, aa[i], "Fixed", 1, sa[i])
@@ -39,5 +40,16 @@ export function jetshot(e){
     for(let i = 0; i < 20; i++){
         shootNWay(e, 1, 0, aa[i], "Fixed", 1, sa[i])
     }
-    e.pos.x -=56
+    e.pos.x = px
+}
+export function penaltyshot_upper(e){
+    let px = e.pos.x
+    let py = e.pos.y
+    e.pos.x -=36
+    e.pos.y -= 42
+    shootNWay(e, 3, Math.PI/3, -Math.PI/2, "Fixed", 1, 10)
+    e.pos.x +=72
+    shootNWay(e, 3, Math.PI/3, -Math.PI/2, "Fixed", 1, 10)
+    e.pos.x = px
+    e.pos.y = py
 }
