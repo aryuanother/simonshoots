@@ -20,24 +20,24 @@ export function init(){
         py = e.clientY
         dragging = true
     }
-    document.ontouchstart = e=>{
+    document.addEventListener("touchstart",e=>{
         e.preventDefault()
         px = mousex = e.touches[0].clientX
         py = mousey = e.touches[0].clientY
         dragging = true
-    }
+    }, {passive:false})
     document.onmousemove = e=>{
         e.preventDefault()
         if(!dragging)return
         mousex = e.clientX
         mousey = e.clientY
     }
-    document.ontouchmove = e=>{
+    document.addEventListener("touchmove",e=>{
         e.preventDefault()
         if(!dragging)return
         mousex = e.touches[0].clientX
         mousey = e.touches[0].clientY
-    }
+    }, {passive:false})
     document.onmouseup = e=>{
         mousex = e.clientX
         mousey = e.clientY
