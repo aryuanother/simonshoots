@@ -27,14 +27,14 @@ export function init(){
         dragging = true
     }
     document.onmousemove = e=>{
-        if(!dragging)return
         e.preventDefault()
+        if(!dragging)return
         mousex = e.clientX
         mousey = e.clientY
     }
     document.ontouchmove = e=>{
-        if(!dragging)return
         e.preventDefault()
+        if(!dragging)return
         mousex = e.touches[0].clientX
         mousey = e.touches[0].clientY
     }
