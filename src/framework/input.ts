@@ -5,6 +5,24 @@ export let keystate = {}
 let mousex:number, mousey:number
 let px:number, py:number
 let dragging:boolean, pd:boolean
+
+function ts(e:TouchEvent){
+    e.preventDefault()
+    px = mousex = e.touches[0].clientX
+    py = mousey = e.touches[0].clientY
+    dragging = true
+}
+function tm(e:TouchEvent){
+    e.preventDefault()
+    if(!dragging)return
+    mousex = e.touches[0].clientX
+    mousey = e.touches[0].clientY
+}
+function te(e:TouchEvent){
+    mousex = e.touches[0].clientX
+    mousey = e.touches[0].clientY
+    dragging = false
+}
 export function init(){
     document.onkeydown = e=>{
         if(e.repeat) return
@@ -15,39 +33,23 @@ export function init(){
         keystate[e.key] = false
     }
     document.onmousedown = e=>{
-        e.preventDefault()
         px = e.clientX
         py = e.clientY
         dragging = true
     }
-    document.ontouchstart =/*addEventListener("touchstart",*/e=>{
-        e.preventDefault()
-        px = mousex = e.touches[0].clientX
-        py = mousey = e.touches[0].clientY
-        dragging = true
-    }/*, {passive:false})*/
+    document.addEventListener("touchstart",ts, {passive:false})
     document.onmousemove = e=>{
-        e.preventDefault()
         if(!dragging)return
         mousex = e.clientX
         mousey = e.clientY
     }
-    document.ontouchmove=/*addEventListener("touchmove",*/e=>{
-        e.preventDefault()
-        if(!dragging)return
-        mousex = e.touches[0].clientX
-        mousey = e.touches[0].clientY
-    }/*, {passive:false})*/
+    document.addEventListener("touchmove",tm, {passive:false})
     document.onmouseup = e=>{
         mousex = e.clientX
         mousey = e.clientY
         dragging = false
     }
-    document.ontouchend=/*addEventListener("touchend",*/e=>{
-        mousex = e.touches[0].clientX
-        mousey = e.touches[0].clientY
-        dragging = false
-    }/*, {passive:false})*/
+    document.addEventListener("touchend",te, {passive:false})
     joystick = {x: 0, y: 0}
     justReleased = false
     justPressed = false
