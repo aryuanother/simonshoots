@@ -32,8 +32,8 @@ export function run(f_init:()=>void, f_start:()=>void,
     GameObject.init()
     canvas = <HTMLCanvasElement>document.getElementById("canvas")
     context = canvas.getContext('2d')
-    width = canvas.width
-    height = canvas.height
+    width = canvas.width = 500
+    height = canvas.height = 500
     _init()
     startTitle()
     window.requestAnimationFrame = (function(){
