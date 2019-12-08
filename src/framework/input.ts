@@ -2,8 +2,8 @@ export let joystick = {x: 0, y: 0}
 export let justReleased = false
 export let justPressed = false
 export let keystate = {}
-let mousex:number[], mousey:number[]
-let px, py
+let mousex:number, mousey:number
+let px:number, py:number
 let dragging:boolean
 export function init(){
     document.onkeydown = e=>{
@@ -22,30 +22,30 @@ export function init(){
     }
     document.ontouchstart = e=>{
         e.preventDefault()
-        px = e.touches[0].clientX
-        py = e.touches[0].clientY
+        px = mousex = e.touches[0].clientX
+        py = mousey = e.touches[0].clientY
         dragging = true
     }
     document.onmousemove = e=>{
         if(!dragging)return
         e.preventDefault()
-        mousex.push(e.clientX)
-        mousey.push(e.clientY)
+        mousex = e.clientX
+        mousey = e.clientY
     }
     document.ontouchmove = e=>{
         if(!dragging)return
         e.preventDefault()
-        mousex.push(e.touches[0].clientX)
-        mousey.push(e.touches[0].clientY)
+        mousex = e.touches[0].clientX
+        mousey = e.touches[0].clientY
     }
     document.onmouseup = e=>{
-        mousex.push(e.clientX)
-        mousey.push(e.clientY)
+        mousex = e.clientX
+        mousey = e.clientY
         dragging = false
     }
     document.ontouchend = e=>{
-        mousex.push(e.touches[0].clientX)
-        mousey.push(e.touches[0].clientY)
+        mousex = e.touches[0].clientX
+        mousey = e.touches[0].clientY
         dragging = false
     }
     joystick = {x: 0, y: 0}
@@ -53,8 +53,6 @@ export function init(){
     justPressed = false
     keystate = {}
     
-    mousex = new Array(0)
-    mousey = new Array(0)
     dragging = false
 }
 export function update(){
@@ -64,21 +62,15 @@ export function update(){
     keystate["ArrowLeft"] && joystick.x--
     keystate["ArrowDown"] && joystick.y++
     keystate["ArrowUp"] && joystick.y--
-    if(mousex.length != 0){
-        let mx = mousex.reduce((sum,val)=>sum+val)
-        let my = mousey.reduce((sum,val)=>sum+val)
-        mx != 0 && (mx /= mousex.length)
-        my != 0 && (my /= mousey.length)
-        let dx = mx-px, dy = my-py
-        dx > 0 && joystick.x++
-        dx < 0 && joystick.x--
-        dy > 0 && joystick.y++
-        dy < 0 && joystick.y--
-        px = mx
-        py = my
-        mousex = new Array(0)
-        mousey = new Array(0)
-    }
+    
+    let dx = mousex-px, dy = mousey-py
+    dx > 0 && joystick.x++
+    dx < 0 && joystick.x--
+    dy > 0 && joystick.y++
+    dy < 0 && joystick.y--
+    px = mousex
+    py = mousey
+
     const jm = joystick.x**2+joystick.y**2
     const jmrt = Math.sqrt(jm)
     if(jmrt != 0){
