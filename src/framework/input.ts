@@ -20,34 +20,34 @@ export function init(){
         py = e.clientY
         dragging = true
     }
-    document.addEventListener("touchstart",e=>{
+    document.ontouchstart =/*addEventListener("touchstart",*/e=>{
         e.preventDefault()
         px = mousex = e.touches[0].clientX
         py = mousey = e.touches[0].clientY
         dragging = true
-    }, {passive:false})
+    }/*, {passive:false})*/
     document.onmousemove = e=>{
         e.preventDefault()
         if(!dragging)return
         mousex = e.clientX
         mousey = e.clientY
     }
-    document.addEventListener("touchmove",e=>{
+    document.ontouchmove=/*addEventListener("touchmove",*/e=>{
         e.preventDefault()
         if(!dragging)return
         mousex = e.touches[0].clientX
         mousey = e.touches[0].clientY
-    }, {passive:false})
+    }/*, {passive:false})*/
     document.onmouseup = e=>{
         mousex = e.clientX
         mousey = e.clientY
         dragging = false
     }
-    document.addEventListener("touchend",e=>{
+    document.ontouchend=/*addEventListener("touchend",*/e=>{
         mousex = e.touches[0].clientX
         mousey = e.touches[0].clientY
         dragging = false
-    }, {passive:false})
+    }/*, {passive:false})*/
     joystick = {x: 0, y: 0}
     justReleased = false
     justPressed = false
