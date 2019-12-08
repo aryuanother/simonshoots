@@ -77,7 +77,7 @@ export function update(){
         joystick.x /= jmrt
         joystick.y /= jmrt
     }
-    justReleased = !dragging && jm == 0 && pjm != 0
-    justPressed = !pd && jm != 0 && pjm == 0
+    justReleased = !dragging && (pd || jm == 0 && pjm != 0)
+    justPressed = !pd && (dragging || jm != 0 && pjm == 0)
     pd = dragging
 }

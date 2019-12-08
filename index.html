@@ -9,8 +9,21 @@
     <title>Simon Shoots</title>
 </head>
 <body>
-    <canvas id="canvas" width="400" height="400"></canvas>
+    <canvas id="canvas" width="500" height="500"></canvas>
     <script src="build/index.js"></script>
-    
+    <script>
+      function canvas_resize(){
+        let c = document.getElementById("canvas")
+        let cw = c.width
+        let dw = document.documentElement.clientWidth;
+        if(cw >= dw){
+          c.style.zoom = ""+(dw/cw)
+        }
+      }
+      canvas_resize();
+      window.addEventListener("resize", function(event) {
+        canvas_resize();
+      });
+  </script>
 </body>
 </html>
