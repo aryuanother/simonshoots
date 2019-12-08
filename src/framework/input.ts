@@ -13,15 +13,12 @@ function ts(e:TouchEvent){
     dragging = true
 }
 function tm(e:TouchEvent){
-    alert("moving")
     e.preventDefault()
     if(!dragging)return
     mousex = e.touches[0].clientX
     mousey = e.touches[0].clientY
 }
 function te(e:TouchEvent){
-    mousex = e.touches[0].clientX
-    mousey = e.touches[0].clientY
     dragging = false
 }
 export function init(){
@@ -50,7 +47,7 @@ export function init(){
         mousey = e.clientY
         dragging = false
     }
-    document.addEventListener("touchend",te, {passive:false})
+    document.addEventListener("touchend",te, {passive:true})
     joystick = {x: 0, y: 0}
     justReleased = false
     justPressed = false
