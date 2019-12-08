@@ -100,7 +100,7 @@ export class Shot extends fw.Shot{
         if(this.ticks == 1)
             new Muzzle(this.pos.x, this.pos.y, this.image.width*2, 10)
         if(this.ticks == 5)
-            this.damage = 1
+            this.damage = 1            
         super.update()
     }
     dealDamage(val?:number){
@@ -159,11 +159,6 @@ export class Bullet extends fw.Bullet{
         super(gobj, speed, angle);
         this.collision.r = r
         this.image =img
-    }
-    update(){
-        if(this.ticks == 1)
-            new Muzzle(this.pos.x, this.pos.y, this.image.width*2, 20)
-        super.update()
     }
 }
 

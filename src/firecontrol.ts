@@ -1,6 +1,6 @@
 import {Random} from "./framework/random"
 import {GameObject} from "./framework/index"
-import {player, Bullet}from "./gobj"
+import {player, Bullet, Muzzle}from "./gobj"
 import {svg} from "./svg"
 import _ = require("lodash")
 
@@ -24,6 +24,7 @@ export function shootNWay(gobj:GameObject, way:number, spreadAngle:number, aimAn
         })
         a -= da
     })
+    new Muzzle(gobj.pos.x, gobj.pos.y, svg[aimType==="Aim"?"bullet_aim":"bullet"].width*2, 20)
 }
 
 export function jetshot(e){
@@ -34,12 +35,14 @@ export function jetshot(e){
     let px = e.pos.x
     e.pos.x -=56
     for(let i = 0; i < 20; i++){
-        shootNWay(e, 1, 0, aa[i], "Fixed", 1, sa[i])
+        new Bullet(e, sa[i], aa[i], 12, svg["bullet"])
     }
+    new Muzzle(e.pos.x, e.pos.y, svg["bullet"].width*2, 20)
     e.pos.x +=112
     for(let i = 0; i < 20; i++){
-        shootNWay(e, 1, 0, aa[i], "Fixed", 1, sa[i])
+        new Bullet(e, sa[i], aa[i], 12, svg["bullet"])
     }
+    new Muzzle(e.pos.x, e.pos.y, svg["bullet"].width*4, 20)
     e.pos.x = px
 }
 export function penaltyshot_upper(e){
@@ -48,8 +51,10 @@ export function penaltyshot_upper(e){
     e.pos.x -=36
     e.pos.y -= 42
     shootNWay(e, 3, Math.PI/3, -Math.PI/2, "Fixed", 1, 10)
+    new Muzzle(e.pos.x, e.pos.y, svg["bullet"].width*2, 20)
     e.pos.x +=72
     shootNWay(e, 3, Math.PI/3, -Math.PI/2, "Fixed", 1, 10)
+    new Muzzle(e.pos.x, e.pos.y, svg["bullet"].width*2, 20)
     e.pos.x = px
     e.pos.y = py
 }
