@@ -7,6 +7,7 @@ let px:number, py:number
 let dragging:boolean, pd:boolean
 
 function ts(e:TouchEvent){
+    alert("touched")
     e.preventDefault()
     px = mousex = e.touches[0].clientX
     py = mousey = e.touches[0].clientY
