@@ -43,11 +43,11 @@ export function init(){
         mousey = e.clientY
         dragging = false
     }
-    document.ontouchend = e=>{
+    document.addEventListener("touchend",e=>{
         mousex = e.touches[0].clientX
         mousey = e.touches[0].clientY
         dragging = false
-    }
+    }, {passive:false})
     joystick = {x: 0, y: 0}
     justReleased = false
     justPressed = false
@@ -77,7 +77,7 @@ export function update(){
         joystick.x /= jmrt
         joystick.y /= jmrt
     }
-    justReleased =  jm == 0 && pjm != 0
-    justPressed =  jm != 0 && pjm == 0
+    justReleased = !dragging && jm == 0 && pjm != 0
+    justPressed = !pd && jm != 0 && pjm == 0
     pd = dragging
 }
