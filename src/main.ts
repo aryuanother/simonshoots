@@ -19,7 +19,16 @@ function init(){
     fw.context.fillStyle = "#07071f"
     fw.setTitle("Simon Shoots...")
 }
-
+function command_mode(){
+    // remove all shots and bullets
+    // make the player immotal and locked
+    // store deep copy of the enemies
+}
+function control_mode(){
+    // remove all shots and bullets
+    // make the player motal and free
+    // restore deep copy of the enemies
+}
 function* stageScript(){
     for(let i = 0; i < 120; i++) yield;
     

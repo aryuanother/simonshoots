@@ -20,10 +20,10 @@ export function enemy1(ax:number, ay:number,
                 let gobj = c.gobj
                 gobj.clearComponent()
                 gobj.ticks = 0
-                new fw.DoUnderCondition(gobj,
+                gobj.component[gobj.component.indexOf(c)] = new fw.DoUnderCondition(gobj,
                     (c)=>{
                         let gobj = c.gobj
-                        gobj.clearComponent()
+                        gobj.component[gobj.component.indexOf(c)] = new fw.Component(gobj)
                         gobj.vel.x = vx 
                         gobj.vel.y = vy
                         shootNWay(gobj, 4, Math.PI/2, Math.PI/2, "Fixed", 3,2.5)
@@ -125,11 +125,10 @@ export function enemy5(x:number, y:number){
             return c.gobj.ticks < 120
         })
         new DoUnderCondition(e, (c)=>{
-            c.gobj.clearComponent()
             c.gobj.ticks = 0
             c.gobj.vel.x = c.gobj.vel.y = 0
             c.gobj["aiming"] = false
-            new DoUnderCondition(c.gobj, (c)=>{
+            c.gobj.component[c.gobj.component.indexOf(c)] = new DoUnderCondition(c.gobj, (c)=>{
                 let gobj = c.gobj
                 jetshot(gobj)
                 gobj.vel.x = 0

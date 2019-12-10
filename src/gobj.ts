@@ -109,6 +109,33 @@ export class Shot extends fw.Shot{
     }
 }
 
+export function snapShotEnemy(enem){
+    const clone = Object.create(enem.prototype)
+    for(const prop of Object.getOwnPropertyNames(enem)){
+        if(Array.isArray(enem[prop])){
+            if(prop === "component"){
+                clone[prop] = []
+                for(let i = 0; i < enem[prop].length; i++){
+                    const component = Object.create(enem[prop][i].prototype)
+                    Object.assign(component, enem[prop][i])
+                    component.gobj = clone
+                    clone[prop].push(component)
+                }
+            }
+            else{
+                clone[prop] = [...enem[prop]]
+            }
+        }
+        else if(Object.prototype.toString.call(enem[prop]) === "[object Object]"){
+            Object.assign(clone[prop], enem[prop])
+        }
+        else{
+            clone[prop] = enem[prop]
+        }
+    }
+    return clone
+}
+
 export class Enemy extends fw.Enemy{
     img_aim = svg["aim"]
     aiming = false
@@ -159,6 +186,10 @@ export class Bullet extends fw.Bullet{
         super(gobj, speed, angle);
         this.collision.r = r
         this.image =img
+    }
+    destroy(){
+        new Explosion(this, this.pos.x, this.pos.y, this.vel.x/2, this.vel.y/2, 60)
+        super.destroy()
     }
 }
 

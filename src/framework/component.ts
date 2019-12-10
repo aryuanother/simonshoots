@@ -5,7 +5,7 @@ import { isIn } from './util'
 
 export class Component{
     update() {
-        throw new Error("Method not implemented.");
+        
     }
     constructor(public gobj:GameObject){
         if(gobj != null){
