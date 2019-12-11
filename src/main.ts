@@ -24,23 +24,23 @@ let isCommand:boolean
 function command_mode(){
     isCommand = true
     // destroy all shots and bullets
-    GameObject.getByCollisionType("shot").forEach(gobj=>gobj.destroy())
-    GameObject.getByCollisionType("bullet").forEach(gobj=>gobj.destroy())
+    _.forEach(GameObject.getByCollisionType("shot"),gobj=>gobj.destroy())
+    _.forEach(GameObject.getByCollisionType("bullet"),gobj=>gobj.destroy())
     // make the player immotal and locked
     player.setMortal(false)
     // store deep copy of the enemies
     snapshots = []
-    GameObject.getByCollisionType("enemy").forEach(gobj=>snapshots.push(snapShotEnemy(gobj)))
+    _.forEach(GameObject.getByCollisionType("enemy"),gobj=>snapshots.push(snapShotEnemy(gobj)))
 }
 function control_mode(){
     isCommand = false
-    // remove all bullets
-    GameObject.getByCollisionType("bullet").forEach(gobj=>gobj.destroy())
+    // destroy all bullets
+    _.forEach(GameObject.getByCollisionType("bullet"),gobj=>gobj.destroy())
     // make the player motal and free
     player.setMortal(true)
     // restore deep copy of the enemies
-    GameObject.getByCollisionType("enemy").forEach(gobj=>gobj.remove())
-    snapshots.forEach(gobj=>GameObject.add(gobj))
+    _.forEach(GameObject.getByCollisionType("enemy"),gobj=>gobj.remove())
+    _.forEach(snapshots,gobj=>GameObject.add(gobj))
     snapshots = []
 }
 function mode_switch(){

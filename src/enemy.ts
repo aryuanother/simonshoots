@@ -25,7 +25,7 @@ export function enemy1(ax:number, ay:number,
                         gobj.component[gobj.component.indexOf(c)] = new fw.Component(gobj)
                         gobj.vel.x = vx 
                         gobj.vel.y = vy
-                        shootNWay(gobj, 4, Math.PI/2, Math.PI/2, "Fixed", 3,2.5)
+                        shootNWay(gobj, 6, Math.PI/2, Math.PI/2, "Fixed", 8,12)
                     },
                     (c)=>{
                         return Math.abs(c.gobj.pos.x - tx) < 1 &&
