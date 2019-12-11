@@ -69,15 +69,15 @@ function* stageScript(){
     }
 
     mode_switch();{
-        enemy2(4*fw.width/10,-45,0,5,30)
-        enemy2(5*fw.width/10,-45,0,5,30)
-        enemy2(6*fw.width/10,-45,0,5,30)
+        enemy2(3*fw.width/8,-45,0,5,30)
+        enemy2(4*fw.width/8,-45,0,5,30)
+        enemy2(5*fw.width/8,-45,0,5,30)
         for(let i = 0; i < 120; i++) yield;
     }
     mode_switch();{
-        enemy2(4*fw.width/10,-45,0,5,30)
-        enemy2(5*fw.width/10,-45,0,5,30)
-        enemy2(6*fw.width/10,-45,0,5,30)
+        enemy2(3*fw.width/8,-45,0,5,30)
+        enemy2(4*fw.width/8,-45,0,5,30)
+        enemy2(5*fw.width/8,-45,0,5,30)
         for(let i = 0; i < 120; i++) yield;
     }
 
@@ -85,13 +85,13 @@ function* stageScript(){
         enemy3(2*fw.width/10, fw.height/5)
         for(let i = 0; i < 60; i++) yield;
         enemy3(8*fw.width/10, fw.height/5)
-        for(let i = 0; i < 120; i++) yield;
+        for(let i = 0; i < 180; i++) yield;
     }
     mode_switch();{
         enemy3(2*fw.width/10, fw.height/5)
         for(let i = 0; i < 60; i++) yield;
         enemy3(8*fw.width/10, fw.height/5)
-        for(let i = 0; i < 120; i++) yield;
+        for(let i = 0; i < 180; i++) yield;
     }
     
     mode_switch();{
@@ -148,7 +148,7 @@ function* stageScript(){
     }
 
     mode_switch();{
-        enemy6(-90,3*fw.height/4,fw.width/4,fw.height/3,60,360)
+        enemy6(-90,3*fw.height/4,fw.width/4,fw.height/2,60,360)
         for(let i = 0; i < 60; i++) yield;
         enemy6(fw.width/2,-55,fw.width/2,fw.height/4,60,300)
         for(let i = 0; i < 60; i++) yield;
@@ -156,7 +156,7 @@ function* stageScript(){
         for(let i = 0; i < 420; i++) yield;
     }
     mode_switch();{
-        enemy6(-90,3*fw.height/4,fw.width/4,fw.height/3,60,360)
+        enemy6(-90,3*fw.height/4,fw.width/4,fw.height/2,60,360)
         for(let i = 0; i < 60; i++) yield;
         enemy6(fw.width/2,-55,fw.width/2,fw.height/4,60,300)
         for(let i = 0; i < 60; i++) yield;
