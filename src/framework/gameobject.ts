@@ -14,7 +14,6 @@ export class GameObject{
     scale = {x:1.0, y:1.0}
     type: string
     isAlive = true
-    isActive = true
     static showCollision = !true
     collision = {r:0, /*w:0, h:0*/}
     collisionType :string = ""
@@ -40,12 +39,6 @@ export class GameObject{
         this.ticks++
     }
 
-    enable(){
-        this.isActive = true
-    }
-    disable(){
-        this.isActive = false
-    }
     remove(){
         this.isAlive = false
     }
@@ -108,7 +101,7 @@ export class GameObject{
         GameObject.gobj = _.sortBy(GameObject.gobj, "priority")
         for(let i = 0; i < GameObject.gobj.length;){
             const obj = GameObject.gobj[i]
-            if(obj.isAlive !==false && obj.isActive !== false){
+            if(obj.isAlive !==false){
                 obj.update()
             }
             if(obj.isAlive === false){

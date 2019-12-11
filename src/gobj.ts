@@ -8,6 +8,8 @@ export function initPlayer(){
     player = new Player()
 }
 export class Player extends fw.Player{
+    mortal = true
+    scheduledMortalTicks = 0
     constructor(){
         super();
         this.image = svg["player"]
@@ -16,23 +18,37 @@ export class Player extends fw.Player{
         this.collision.r = 5
     }
     update(){
-        super.update()
-        if(this.vel.x == 0 && this.vel.y == 0 && this.ticks%4 == 0 ){
-            let s1 = new Shot(this,32,-Math.PI/2)
-            let s2 = new Shot(this,32,-Math.PI/2)
-            let s3 = new Shot(this,32,-Math.PI/2)
-            let s4 = new Shot(this,32,-Math.PI/2)
-            s1.pos.x += 10
-            s2.pos.x -= 10
-            s3.pos.x += 20
-            s4.pos.x -= 20
-            s3.pos.y += 20
-            s4.pos.y += 20
+        if(this.mortal){
+            super.update()
+            if(this.vel.x == 0 && this.vel.y == 0 && this.ticks%4 == 0 ){
+                let s1 = new Shot(this,32,-Math.PI/2)
+                let s2 = new Shot(this,32,-Math.PI/2)
+                let s3 = new Shot(this,32,-Math.PI/2)
+                let s4 = new Shot(this,32,-Math.PI/2)
+                s1.pos.x += 10
+                s2.pos.x -= 10
+                s3.pos.x += 20
+                s4.pos.x -= 20
+                s3.pos.y += 20
+                s4.pos.y += 20
+            }
         }
+        else{
+            this.ticks++
+            if(this.scheduledMortalTicks > 0 && this.scheduledMortalTicks == this.ticks){
+                this.mortal = true
+                this.scheduledMortalTicks = 0
+            }
+            this.draw()
+        }
+        
     }
     destroy(){
         new Explosion(this, this.pos.x, this.pos.y, this.vel.x/2, this.vel.y/2, 60)
         super.destroy()
+    }
+    setMortal(mortal:boolean){
+        mortal?(this.scheduledMortalTicks = this.ticks+2):(this.mortal = false)
     }
 }
 
@@ -103,20 +119,21 @@ export class Shot extends fw.Shot{
             this.damage = 1            
         super.update()
     }
-    dealDamage(val?:number){
-        super.dealDamage(val)
+    destroy(){
+        super.destroy()
         new Explosion(this, this.pos.x, this.pos.y, 0, this.damage != 1 ?-2:0, 10*this.damage)
     }
+
 }
 
-export function snapShotEnemy(enem){
-    const clone = Object.create(enem.prototype)
+export function snapShotEnemy(enem: fw.GameObject){
+    const clone = Object.create(enem)
     for(const prop of Object.getOwnPropertyNames(enem)){
         if(Array.isArray(enem[prop])){
             if(prop === "component"){
                 clone[prop] = []
-                for(let i = 0; i < enem[prop].length; i++){
-                    const component = Object.create(enem[prop][i].prototype)
+                for(let i in enem[prop]){
+                    const component = Object.create(enem[prop][i])
                     Object.assign(component, enem[prop][i])
                     component.gobj = clone
                     clone[prop].push(component)
@@ -127,6 +144,7 @@ export function snapShotEnemy(enem){
             }
         }
         else if(Object.prototype.toString.call(enem[prop]) === "[object Object]"){
+            clone[prop] = {}
             Object.assign(clone[prop], enem[prop])
         }
         else{

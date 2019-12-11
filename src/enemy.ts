@@ -18,7 +18,6 @@ export function enemy1(ax:number, ay:number,
         new fw.DoUnderCondition(e,
             (c)=>{
                 let gobj = c.gobj
-                gobj.clearComponent()
                 gobj.ticks = 0
                 gobj.component[gobj.component.indexOf(c)] = new fw.DoUnderCondition(gobj,
                     (c)=>{
