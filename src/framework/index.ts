@@ -1,6 +1,7 @@
 import {GameObject, Text} from "./gameobject"
 import * as input from "./input"
 import {Random} from "./random"
+import _ = require("lodash")
 export {input, Random}
 export * from "./gameobject"
 export * from "./util"
@@ -126,7 +127,9 @@ export function drawText(str:string, x:number, y:number){
     context.font = "small-caps 14px sans-serif"
     context.textAlign = "center"
     context.textBaseline = "middle"
-    context.fillText(str, x, y)
+    _.forEach(str.split("\n"), (line, index)=>{
+        context.fillText(line, x, y+index*14)
+    })
     context.fillStyle = originFillStyle
     context.font = originFont
 } 

@@ -4,12 +4,15 @@ import _ = require("lodash")
 import {svg} from "./svg"
 
 export let player: Player
+export let hud: HUD
 export function initPlayer(){
     player = new Player()
+    hud = new HUD()
 }
 export class Player extends fw.Player{
     mortal = true
     scheduledMortalTicks = 0
+    count_shield = 3
     constructor(){
         super();
         this.image = svg["player"]
@@ -124,6 +127,94 @@ export class Shot extends fw.Shot{
         new Explosion(this, this.pos.x, this.pos.y, 0, this.damage != 1 ?-2:0, 10*this.damage)
     }
 
+}
+
+export class HUD extends fw.GameObject{
+    isUpper = true
+    isStay = false
+    img_shield = svg["shield"]
+    img_stay = svg["stay"]
+    img_move = svg["move"]
+    snapshots:fw.GameObject[] = []
+    constructor(){
+        super()
+        this.image = svg["hud"]
+        this.ticks = 20
+    }
+
+    stay(){
+        this.isStay = true
+        // destroy all shots and bullets
+        _.forEach(GameObject.getByCollisionType("shot"),gobj=>gobj.destroy())
+        _.forEach(GameObject.getByCollisionType("bullet"),gobj=>gobj.destroy())
+        // make the player immotal and locked
+        player.setMortal(false)
+        // store deep copy of the enemies
+        this.snapshots = []
+        _.forEach(GameObject.getByCollisionType("enemy"),gobj=>this.snapshots.push(snapShotEnemy(gobj)))
+    }
+    move(){
+        this.isStay = false
+        // destroy all bullets
+        _.forEach(GameObject.getByCollisionType("bullet"),gobj=>gobj.destroy())
+        // make the player motal and free
+        player.setMortal(true)
+        // restore deep copy of the enemies
+        _.forEach(GameObject.getByCollisionType("enemy"),gobj=>gobj.remove())
+        _.forEach(this.snapshots,gobj=>GameObject.add(gobj))
+        this.snapshots = []
+    }
+    toggle(){
+        this.isStay?this.move():this.stay()
+    }
+
+    update(){
+        
+        if(!this.isUpper && player.pos.y > 2*fw.height/3){
+            this.isUpper = true
+            this.ticks = 0
+        }
+        if(this.isUpper && player.pos.y < fw.height/3){
+            this.isUpper = false
+            this.ticks = 0
+        }
+        super.update()
+    }
+    draw(){
+        let upper = (this.isUpper && this.ticks >= 10) || (!this.isUpper && this.ticks < 10)
+        let anchor_y = upper?0:fw.height
+        if(this.ticks < 10){
+            if(upper) anchor_y -= 6*this.ticks
+            else anchor_y += 6*this.ticks
+        }
+        else if(this.ticks < 20){
+            if(upper) anchor_y += 6*(this.ticks-20)
+            else anchor_y -= 6*(this.ticks-20)
+        }
+
+        this.context.save()
+        this.context.translate(fw.width/2, anchor_y)
+        this.context.rotate((upper?1:-1)*Math.PI/2)
+        this.context.drawImage(this.image, -(this.image.width/2), -(this.image.height/2))
+        this.context.restore()
+        
+        let img_mode = this.isStay?this.img_stay:this.img_move
+        
+        this.context.save()
+        this.context.translate(fw.width/2, anchor_y+(upper?15:-15))
+        this.context.drawImage(img_mode, -(img_mode.width/2), -(img_mode.height/2))
+        this.context.restore()
+
+        this.context.save()
+        this.context.translate(fw.width/2, anchor_y+(upper?45:-45))
+        let x = -(this.img_shield.width/2)
+        x -= (player.count_shield-1)*this.img_shield.width/2
+        for(let i = 1; i <= player.count_shield; i++){
+            this.context.drawImage(this.img_shield, x, -(this.img_shield.height/2))
+            x += this.img_shield.width
+        }
+        this.context.restore()
+    }
 }
 
 export function snapShotEnemy(enem: fw.GameObject){
