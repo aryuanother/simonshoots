@@ -11,6 +11,7 @@ export function initPlayer(){
 }
 export class Player extends fw.Player{
     mortal = true
+    freezed = false
     scheduledMortalTicks = 0
     count_shield = 3
     constructor(){
@@ -21,8 +22,13 @@ export class Player extends fw.Player{
         this.collision.r = 5
     }
     update(){
-        if(this.mortal){
-            super.update()
+        this.collision.r = this.mortal?5:NaN
+        super.update()
+        
+        if(this.freezed){
+            this.vel.x = this.vel.y = 0
+        }
+        else{
             if(this.vel.x == 0 && this.vel.y == 0 && this.ticks%4 == 0 ){
                 let s1 = new Shot(this,32,-Math.PI/2)
                 let s2 = new Shot(this,32,-Math.PI/2)
@@ -36,15 +42,17 @@ export class Player extends fw.Player{
                 s4.pos.y += 20
             }
         }
-        else{
-            this.ticks++
-            if(this.scheduledMortalTicks > 0 && this.scheduledMortalTicks == this.ticks){
-                this.mortal = true
-                this.scheduledMortalTicks = 0
-            }
-            this.draw()
+        if(!this.mortal && this.scheduledMortalTicks > 0 && this.scheduledMortalTicks == this.ticks){
+            this.mortal = true
+            this.scheduledMortalTicks = 0
         }
-        
+    }
+    dealDamage(){
+        if(this.count_shield == 0)this.destroy()
+        else{
+            this.count_shield--
+            this.setMortal(false)
+        }
     }
     destroy(){
         new Explosion(this, this.pos.x, this.pos.y, this.vel.x/2, this.vel.y/2, 60)
@@ -52,6 +60,9 @@ export class Player extends fw.Player{
     }
     setMortal(mortal:boolean){
         mortal?(this.scheduledMortalTicks = this.ticks+2):(this.mortal = false)
+    }
+    setFreeze(freeze:boolean){
+        this.freezed = freeze
     }
 }
 
@@ -149,6 +160,7 @@ export class HUD extends fw.GameObject{
         _.forEach(GameObject.getByCollisionType("bullet"),gobj=>gobj.destroy())
         // make the player immotal and locked
         player.setMortal(false)
+        player.setFreeze(true)
         // store deep copy of the enemies
         this.snapshots = []
         _.forEach(GameObject.getByCollisionType("enemy"),gobj=>this.snapshots.push(snapShotEnemy(gobj)))
@@ -159,6 +171,7 @@ export class HUD extends fw.GameObject{
         _.forEach(GameObject.getByCollisionType("bullet"),gobj=>gobj.destroy())
         // make the player motal and free
         player.setMortal(true)
+        player.setFreeze(false)
         // restore deep copy of the enemies
         _.forEach(GameObject.getByCollisionType("enemy"),gobj=>gobj.remove())
         _.forEach(this.snapshots,gobj=>GameObject.add(gobj))

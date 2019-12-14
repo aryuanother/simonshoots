@@ -26,7 +26,7 @@ function init(){
 
 function* stageScript(){
     hud.move()
-    for(let i = 0; i < 12000; i++) yield;
+    for(let i = 0; i < 120; i++) yield;
 
     hud.toggle();{
         enemy1(-25,0,fw.width/3,fw.height/4,0,-10,30,60)
