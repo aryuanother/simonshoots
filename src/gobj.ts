@@ -5,7 +5,7 @@ import {svg} from "./svg"
 
 export let player: Player
 export let hud: HUD
-export function initPlayer(){
+export function initGameObjects(){
     player = new Player()
     hud = new HUD()
 }
@@ -153,16 +153,28 @@ export class HUD extends fw.GameObject{
     img_stay = svg["stay"]
     img_move = svg["move"]
     snapshots:fw.GameObject[] = []
+    score = 0
+    count_enemy = 0
+    count_destroyed = 0
+    count_bullet_exp = 0
+    count_bullet_act = 0
+    sweep_bonus = 0
     constructor(){
         super()
         this.image = svg["hud"]
-        this.ticks = 20
+        this.ticks = 10
         this.pos.x = fw.width/2
         this.clearComponent()
     }
 
     stay(){
         this.isStay = true
+        // bullet prevent bonus
+        if(this.count_bullet_exp > this.count_bullet_act){
+            this.score += 100*(this.count_bullet_exp-this.count_bullet_act)
+            let upper = (this.isUpper && this.ticks >= 10) || (!this.isUpper && this.ticks < 10)
+            new fw.Text("SEALED+"+100*(this.count_bullet_exp-this.count_bullet_act)).pos = {x:3*fw.width/4,y:this.pos.y+(upper?60:-30)}
+        }
         // destroy all shots and bullets
         _.forEach(GameObject.getByCollisionType("shot"),gobj=>gobj.destroy())
         _.forEach(GameObject.getByCollisionType("bullet"),gobj=>gobj.destroy())
@@ -174,6 +186,9 @@ export class HUD extends fw.GameObject{
         _.forEach(GameObject.getByCollisionType("enemy"),gobj=>this.snapshots.push(snapShotEnemy(gobj)))
 
         new Explosion(player, hud.pos.x, hud.pos.y+(hud.pos.y > fw.height/2?-15:15), 0, 0, 60).image = this.img_stay
+
+        this.count_enemy = 0
+        this.count_bullet_exp = 0
     }
     move(){
         this.isStay = false
@@ -186,13 +201,31 @@ export class HUD extends fw.GameObject{
         _.forEach(GameObject.getByCollisionType("enemy"),gobj=>gobj.remove())
         _.forEach(this.snapshots,gobj=>GameObject.add(gobj))
         this.snapshots = []
-
+        
         new Explosion(player, hud.pos.x, hud.pos.y+(hud.pos.y > fw.height/2?-15:15), 0, 0, 60).image = this.img_move
+        
+        this.count_destroyed = 0
+        this.count_bullet_act = 0
     }
     toggle(){
         this.isStay?this.move():this.stay()
     }
-
+    appearEnemy(){
+        if(this.isStay) this.count_enemy++
+    }
+    disappearEnemy(){
+        if(!this.isStay){
+            this.count_destroyed++
+            if(this.count_enemy == this.count_destroyed){
+                this.score += this.sweep_bonus
+                let upper = (this.isUpper && this.ticks >= 10) || (!this.isUpper && this.ticks < 10)
+                new fw.Text("SWEPT+"+this.sweep_bonus).pos = {x:3*fw.width/4,y:this.pos.y+(upper?60:-30)}
+            }
+        }
+    }
+    shotBullet(){
+        this.isStay?this.count_bullet_exp++:this.count_bullet_act++
+    }
     update(){
         if(!this.isUpper && player.pos.y > 2*fw.height/3){
             this.isUpper = true
@@ -240,6 +273,10 @@ export class HUD extends fw.GameObject{
             x += this.img_shield.width
         }
         this.context.restore()
+
+        let score_str = "SCORE:"
+        score_str += ("00000000"+this.score).slice(-8)
+        fw.drawText(score_str, 7*fw.width/8, this.pos.y+(upper?15:-15))
     }
 }
 
@@ -278,11 +315,13 @@ export class Enemy extends fw.Enemy{
         super();
         f(this)
         this.priority = 0.3
+        hud.appearEnemy()
     }
     dealDamage(val?:number){
         if(0 <= this.pos.x && this.pos.x <= fw.width &&
            0 <= this.pos.y && this.pos.y <= fw.height)
             super.dealDamage(val)
+        hud.score += 10*val
     }
     draw(){
         if(this.aiming){
@@ -297,7 +336,9 @@ export class Enemy extends fw.Enemy{
         super.draw()
     }
     destroy(){
+        if(!this.isAlive) return
         new Explosion(this, this.pos.x, this.pos.y, this.vel.x/2, this.vel.y/2, 60)
+        hud.disappearEnemy()
         super.destroy()
     }
 }
@@ -308,8 +349,10 @@ export class EnemyWithToughness extends Enemy{
         super(f)
     }
     dealDamage(val:number = 1){
-        if(!val) return
-        this.toughness -= val
+        if(0 <= this.pos.x && this.pos.x <= fw.width &&
+            0 <= this.pos.y && this.pos.y <= fw.height)
+            this.toughness -= val
+        hud.score += 10*val
         if(this.toughness <= 0){
             this.destroy()
         }
@@ -321,6 +364,7 @@ export class Bullet extends fw.Bullet{
         super(gobj, speed, angle);
         this.collision.r = r
         this.image =img
+        hud.shotBullet()
     }
     destroy(){
         new Explosion(this, this.pos.x, this.pos.y, this.vel.x/2, this.vel.y/2, 60)

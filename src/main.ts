@@ -1,7 +1,7 @@
 import * as fw from "./framework/index"
 import { GameObject, DoUnderCondition, MoveTo, Player } from "./framework/index"
 import * as _ from 'lodash'
-import { ZakoHeli, player, initPlayer, snapShotEnemy, hud } from "./gobj"
+import { ZakoHeli, player, snapShotEnemy, hud, initGameObjects } from "./gobj"
 import { loadSVG } from "./svg"
 import { enemy1, enemy2, enemy3, enemy4, enemy5, enemy6 } from "./enemy"
 
@@ -34,6 +34,7 @@ function* stageScript(){
         enemy1(fw.width+25,0,2*fw.width/3,fw.height/4,0,-10,30,0)
         for(let i = 0; i < 60; i++) yield;
     }
+    hud.sweep_bonus = 1000;
     hud.toggle();{
         enemy1(-25,0,fw.width/3,fw.height/4,0,-10,30,60)
         for(let i = 0; i < 60; i++) yield;
@@ -47,6 +48,7 @@ function* stageScript(){
         enemy2(5*fw.width/8,-45,0,5,30)
         for(let i = 0; i < 120; i++) yield;
     }
+    hud.sweep_bonus = 1500;
     hud.toggle();{
         enemy2(3*fw.width/8,-45,0,5,30)
         enemy2(4*fw.width/8,-45,0,5,30)
@@ -60,6 +62,7 @@ function* stageScript(){
         enemy3(8*fw.width/10, fw.height/5)
         for(let i = 0; i < 180; i++) yield;
     }
+    hud.sweep_bonus = 2000;
     hud.toggle();{
         enemy3(2*fw.width/10, fw.height/5)
         for(let i = 0; i < 60; i++) yield;
@@ -73,7 +76,8 @@ function* stageScript(){
             yield;yield;yield;yield;
         }
         for(let i = 0; i < 120; i++) yield;
-    }
+    }    
+    hud.sweep_bonus = 1000;
     hud.toggle();{
         for(let i = 1; i <= 6; i++) {
             enemy4(i*(fw.width+100)/7-50, -45,5)
@@ -94,6 +98,7 @@ function* stageScript(){
         }
         for(let i = 0; i < 120; i++) yield;
     }
+    hud.sweep_bonus = 4000;
     hud.toggle();{
         for(let i = 6; i >= 1; i--) {
             new ZakoHeli((e)=>{
@@ -108,40 +113,44 @@ function* stageScript(){
     }
     
     hud.toggle();{
-        enemy5(-90, fw.height/3)
+        enemy5(-90, fw.height/3).toughness = 90
         for(let i = 0; i < 180; i++) yield;
-        enemy5(fw.width+90, fw.height/2)
+        enemy5(fw.width+90, fw.height/2).toughness = 90
         for(let i = 0; i < 300; i++) yield;
     }
+    hud.sweep_bonus = 2000;
     hud.toggle();{
-        enemy5(-90, fw.height/3)
+        enemy5(-90, fw.height/3).toughness = 90
         for(let i = 0; i < 180; i++) yield;
-        enemy5(fw.width+90, fw.height/2)
+        enemy5(fw.width+90, fw.height/2).toughness = 90
         for(let i = 0; i < 300; i++) yield;
     }
 
     hud.toggle();{
-        enemy6(-90,3*fw.height/4,fw.width/4,fw.height/2,60,360)
+        enemy6(-90,3*fw.height/4,fw.width/4,fw.height/2,60,360).toughness = 90
         for(let i = 0; i < 60; i++) yield;
-        enemy6(fw.width/2,-55,fw.width/2,fw.height/4,60,300)
+        enemy6(fw.width/2,-55,fw.width/2,fw.height/4,60,300).toughness = 90
         for(let i = 0; i < 60; i++) yield;
-        enemy6(fw.width+90,3*fw.height/4,3*fw.width/4,fw.height/2,60,240)
+        enemy6(fw.width+90,3*fw.height/4,3*fw.width/4,fw.height/2,60,240).toughness = 90
         for(let i = 0; i < 420; i++) yield;
     }
+    hud.sweep_bonus = 4000;
     hud.toggle();{
-        enemy6(-90,3*fw.height/4,fw.width/4,fw.height/2,60,360)
+        enemy6(-90,3*fw.height/4,fw.width/4,fw.height/2,60,360).toughness = 90
         for(let i = 0; i < 60; i++) yield;
-        enemy6(fw.width/2,-55,fw.width/2,fw.height/4,60,300)
+        enemy6(fw.width/2,-55,fw.width/2,fw.height/4,60,300).toughness = 90
         for(let i = 0; i < 60; i++) yield;
-        enemy6(fw.width+90,3*fw.height/4,3*fw.width/4,fw.height/2,60,240)
+        enemy6(fw.width+90,3*fw.height/4,3*fw.width/4,fw.height/2,60,240).toughness = 90
         for(let i = 0; i < 420; i++) yield;
     }
+    hud.toggle();
     for(let i = 0; i < 300; i++) yield;
+    hud.toggle();
     fw.endGame()
 }
 let ss: Generator<any, void, unknown>
 function start(){
-    initPlayer()
+    initGameObjects()
     ss = stageScript()
 }
 function update(){

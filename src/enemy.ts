@@ -110,7 +110,7 @@ export function enemy4(x:number, y:number, speed:number){
 }
 
 export function enemy5(x:number, y:number){
-    new EnemyWithToughness((e)=>{
+    return new EnemyWithToughness((e)=>{
         e.image = svg["enemy_mid"]
         e.collision.r = 50
         e.pos.x = x
@@ -154,13 +154,13 @@ export function enemy5(x:number, y:number){
         (c)=>{
             return c.gobj.pos.y > player.pos.y
         })
-    }).toughness = 180
+    })
 }
 
 export function enemy6(ax:number, ay:number,
                        tx:number, ty:number,
                        mt:number, wt:number){
-    new EnemyWithToughness((e)=>{
+    return new EnemyWithToughness((e)=>{
         e.image = svg["enemy_mid"]
         e.collision.r = 50
         e.pos.x = ax
@@ -183,6 +183,6 @@ export function enemy6(ax:number, ay:number,
             return c.gobj.pos.y > player.pos.y
         })
         
-    }).toughness = 180
+    })
     
 }

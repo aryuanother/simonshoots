@@ -162,7 +162,6 @@ export class Enemy extends GameObject{
         super.update()
         const cs = this.checkCollision("shot")
         if(cs.length  > 0){
-           this.dealDamage()
            _.forEach(cs, (s:GameObject)=>{
                this.dealDamage(s["damage"])
                s.dealDamage()
