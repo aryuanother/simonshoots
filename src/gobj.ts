@@ -29,7 +29,7 @@ export class Player extends fw.Player{
             this.vel.x = this.vel.y = 0
         }
         else{
-            if(this.vel.x == 0 && this.vel.y == 0 && this.ticks%4 == 0 ){
+            if(this.mortal && this.vel.x == 0 && this.vel.y == 0 && this.ticks%4 == 0 ){
                 let s1 = new Shot(this,32,-Math.PI/2)
                 let s2 = new Shot(this,32,-Math.PI/2)
                 let s3 = new Shot(this,32,-Math.PI/2)
@@ -42,15 +42,22 @@ export class Player extends fw.Player{
                 s4.pos.y += 20
             }
         }
-        if(!this.mortal && this.scheduledMortalTicks > 0 && this.scheduledMortalTicks == this.ticks){
-            this.mortal = true
-            this.scheduledMortalTicks = 0
-        }
+        if(!this.mortal){
+            if(this.ticks%30 == 0){
+                new Explosion(this, this.pos.x, this.pos.y, 0, 0, 30).image = this.image
+            }
+            if(this.scheduledMortalTicks > 0 && this.scheduledMortalTicks == this.ticks){
+                this.mortal = true
+                this.scheduledMortalTicks = 0
+            }
+        }    
     }
     dealDamage(){
         if(this.count_shield == 0)this.destroy()
         else{
             this.count_shield--
+            new Explosion(this, hud.pos.x, hud.pos.y+(hud.pos.y > fw.height/2?-45:45), 0, 0, 60)
+            new Explosion(this, this.pos.x, this.pos.y, 0, 0, 60)
             this.setMortal(false)
         }
     }
@@ -99,7 +106,6 @@ export class Explosion extends fw.GameObject{
         this.vel.x = vx
         this.vel.y = vy
         this.image = svg["exp"]
-        this.angle = fw.random.get(0, 2*Math.PI)
         this.size = gobj.image.width > gobj.image.height ? gobj.image.width : gobj.image.height
         this.scale.x = this.size/this.image.width
         this.scale.y = this.size/this.image.height
@@ -151,6 +157,8 @@ export class HUD extends fw.GameObject{
         super()
         this.image = svg["hud"]
         this.ticks = 20
+        this.pos.x = fw.width/2
+        this.clearComponent()
     }
 
     stay(){
@@ -164,6 +172,8 @@ export class HUD extends fw.GameObject{
         // store deep copy of the enemies
         this.snapshots = []
         _.forEach(GameObject.getByCollisionType("enemy"),gobj=>this.snapshots.push(snapShotEnemy(gobj)))
+
+        new Explosion(player, hud.pos.x, hud.pos.y+(hud.pos.y > fw.height/2?-15:15), 0, 0, 60).image = this.img_stay
     }
     move(){
         this.isStay = false
@@ -176,13 +186,14 @@ export class HUD extends fw.GameObject{
         _.forEach(GameObject.getByCollisionType("enemy"),gobj=>gobj.remove())
         _.forEach(this.snapshots,gobj=>GameObject.add(gobj))
         this.snapshots = []
+
+        new Explosion(player, hud.pos.x, hud.pos.y+(hud.pos.y > fw.height/2?-15:15), 0, 0, 60).image = this.img_move
     }
     toggle(){
         this.isStay?this.move():this.stay()
     }
 
     update(){
-        
         if(!this.isUpper && player.pos.y > 2*fw.height/3){
             this.isUpper = true
             this.ticks = 0
@@ -191,9 +202,6 @@ export class HUD extends fw.GameObject{
             this.isUpper = false
             this.ticks = 0
         }
-        super.update()
-    }
-    draw(){
         let upper = (this.isUpper && this.ticks >= 10) || (!this.isUpper && this.ticks < 10)
         let anchor_y = upper?0:fw.height
         if(this.ticks < 10){
@@ -204,9 +212,14 @@ export class HUD extends fw.GameObject{
             if(upper) anchor_y += 6*(this.ticks-20)
             else anchor_y -= 6*(this.ticks-20)
         }
-
+        this.pos.y = anchor_y
+        super.update()
+    }
+    draw(){
+        let upper = (this.isUpper && this.ticks >= 10) || (!this.isUpper && this.ticks < 10)
+        
         this.context.save()
-        this.context.translate(fw.width/2, anchor_y)
+        this.context.translate(this.pos.x, this.pos.y)
         this.context.rotate((upper?1:-1)*Math.PI/2)
         this.context.drawImage(this.image, -(this.image.width/2), -(this.image.height/2))
         this.context.restore()
@@ -214,12 +227,12 @@ export class HUD extends fw.GameObject{
         let img_mode = this.isStay?this.img_stay:this.img_move
         
         this.context.save()
-        this.context.translate(fw.width/2, anchor_y+(upper?15:-15))
+        this.context.translate(this.pos.x, this.pos.y+(upper?15:-15))
         this.context.drawImage(img_mode, -(img_mode.width/2), -(img_mode.height/2))
         this.context.restore()
 
         this.context.save()
-        this.context.translate(fw.width/2, anchor_y+(upper?45:-45))
+        this.context.translate(this.pos.x, this.pos.y+(upper?45:-45))
         let x = -(this.img_shield.width/2)
         x -= (player.count_shield-1)*this.img_shield.width/2
         for(let i = 1; i <= player.count_shield; i++){

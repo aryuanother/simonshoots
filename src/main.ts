@@ -19,7 +19,7 @@ function init(){
     loadSVG("svg/aimmark.svg","aim",500,500)
     loadSVG("svg/shield.svg","shield",30,30)
     loadSVG("svg/stay.svg","stay",80,30)
-    loadSVG("svg/move.svg","move",120,30)
+    loadSVG("svg/move.svg","move",92,30)
     fw.context.fillStyle = "#07071f"
     fw.setTitle("Simon Shoots...")
 }
