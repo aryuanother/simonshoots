@@ -1,7 +1,5 @@
 import * as fw from "./framework/index"
-import { GameObject, DoUnderCondition, MoveTo, Player } from "./framework/index"
-import * as _ from 'lodash'
-import { ZakoHeli, player, snapShotEnemy, hud, initGameObjects } from "./gobj"
+import { ZakoHeli, hud, initGameObjects } from "./gobj"
 import { loadSVG } from "./svg"
 import { enemy1, enemy2, enemy3, enemy4, enemy5, enemy6 } from "./enemy"
 

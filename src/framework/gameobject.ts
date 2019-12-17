@@ -1,7 +1,14 @@
-import * as _ from 'lodash'
 import * as fw from "./index"
-import { StayOnScreen } from './component'
-
+import forEach_ = require('lodash/forEach')
+import filter_ = require('lodash/filter')
+import indexOf_ = require('lodash/indexOf')
+import sortBy_ = require('lodash/sortBy')
+let _ = {
+    forEach:forEach_,
+    filter:filter_,
+    indexOf:indexOf_,
+    sortBy:sortBy_,
+}
 export class GameObject{
     pos = {x:0, y:0}
     ppos = {x:0, y:0}

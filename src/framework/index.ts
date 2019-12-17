@@ -1,11 +1,14 @@
 import {GameObject, Text} from "./gameobject"
 import * as input from "./input"
 import {Random} from "./random"
-import _ = require("lodash")
 export {input, Random}
 export * from "./gameobject"
 export * from "./util"
 export * from "./component"
+import forEach_ = require('lodash/forEach')
+let _ = {
+    forEach:forEach_,
+}
 
 export enum Scene{
     title, playing, gameover

@@ -2,8 +2,10 @@ import {Random} from "./framework/random"
 import {GameObject} from "./framework/index"
 import {player, Bullet, Muzzle}from "./gobj"
 import {svg} from "./svg"
-import _ = require("lodash")
-
+import times_ = require('lodash/times')
+let _ = {
+    times:times_,
+}
 export function shootNWay(gobj:GameObject, way:number, spreadAngle:number, aimAngle:number, aimType:"Fixed"|"Aim", times:number, speed:number){
     let a = aimAngle, da = 0
     if(aimType === "Aim"){

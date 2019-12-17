@@ -1,7 +1,5 @@
-import * as _ from 'lodash'
 import * as fw from "./index"
 import { GameObject } from './gameobject'
-import { isIn } from './util'
 
 export class Component{
     update() {

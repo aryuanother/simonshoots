@@ -1,6 +1,5 @@
 import * as fw from "./framework/index"
-import {GameObject, DoUnderCondition, MoveTo } from "./framework/index"
-import _ = require("lodash")
+import {DoUnderCondition, MoveTo } from "./framework/index"
 import { ZakoHeli, player, EnemyWithToughness } from "./gobj"
 import { shootNWay, jetshot, penaltyshot_upper } from "./firecontrol"
 import { svg } from "./svg"

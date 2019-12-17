@@ -1,7 +1,10 @@
 import * as fw from "./framework/index"
-import { GameObject, DoUnderCondition, MoveTo } from "./framework/index"
-import _ = require("lodash")
+import { GameObject, isIn} from "./framework/index"
 import {svg} from "./svg"
+import forEach_ = require('lodash/forEach')
+let _ = {
+    forEach:forEach_,
+}
 
 export let player: Player
 export let hud: HUD
@@ -280,7 +283,7 @@ export class HUD extends fw.GameObject{
     }
 }
 
-export function snapShotEnemy(enem: fw.GameObject){
+function snapShotEnemy(enem: fw.GameObject){
     const clone = Object.create(enem)
     for(const prop of Object.getOwnPropertyNames(enem)){
         if(Array.isArray(enem[prop])){
@@ -318,8 +321,7 @@ export class Enemy extends fw.Enemy{
         hud.appearEnemy()
     }
     dealDamage(val?:number){
-        if(0 <= this.pos.x && this.pos.x <= fw.width &&
-           0 <= this.pos.y && this.pos.y <= fw.height)
+        if(fw.isIn(this.pos.x,0, fw.width) &&fw.isIn(this.pos.y,0, fw.height))
             super.dealDamage(val)
         hud.score += 10*val
     }
