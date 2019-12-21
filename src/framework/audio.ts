@@ -1,7 +1,9 @@
 import {Howl} from 'howler';
 import forEach_ = require('lodash/forEach')
+import filter_ = require('lodash/filter')
 let _ = {
     forEach:forEach_,
+    filter:filter_
 }
 let h:Howl
 
@@ -24,13 +26,14 @@ export function play(name:string, volume:number = 0.3, rate:number = 1.0){
 }
 let interval:number
 export function setBPM(bpm:number){
-    interval = (60*1000/bpm)/16
+    interval = (60*1000/bpm)/4
 }
 const eps = 5
 export function update(){
     let now = performance.now()
     let deltaPlay = now-perviousPlay
     if(deltaPlay >= interval-eps){
+        h?.state() == "loaded" && 
         _.forEach(Object.keys(playlist),key=>{
             let id = h?.play(key)
             h?.volume(playlist[key].volume, id)

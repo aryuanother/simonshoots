@@ -27,7 +27,7 @@ export function shootNWay(gobj:GameObject, way:number, spreadAngle:number, aimAn
         a -= da
     })
     new Muzzle(gobj.pos.x, gobj.pos.y, svg[aimType==="Aim"?"bullet_aim":"bullet"].width*2, 20)
-    audio.play("bullet_l2")
+    audio.play("bullet_l2",0.2)
 }
 
 export function jetshot(e){
@@ -61,5 +61,5 @@ export function penaltyshot_upper(e){
     new Muzzle(e.pos.x, e.pos.y, svg["bullet"].width*2, 20)
     e.pos.x = px
     e.pos.y = py
-    audio.play("bullet_l1")
+    audio.play("bullet_l1",0.1)
 }

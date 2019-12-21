@@ -34,7 +34,7 @@ export class Player extends fw.Player{
         }
         else{
             if(this.mortal && this.vel.x == 0 && this.vel.y == 0 && this.ticks%4 == 0 ){
-                fw.audio.play("shot")
+                fw.audio.play("shot", 0.1)
                 let s1 = new Shot(this,32,-Math.PI/2)
                 let s2 = new Shot(this,32,-Math.PI/2)
                 let s3 = new Shot(this,32,-Math.PI/2)
@@ -148,7 +148,7 @@ export class Shot extends fw.Shot{
     }
     destroy(){
         super.destroy()
-        this.damage != 1 && fw.audio.play("enemydestroyed_l2")
+        this.damage != 1 && fw.audio.play("enemydestroyed_l2",0.1)
         new Explosion(this, this.pos.x, this.pos.y, 0, this.damage != 1 ?-2:0, 10*this.damage)
     }
 
@@ -218,7 +218,7 @@ export class HUD extends fw.GameObject{
     }
     toggle(){
         this.isStay?this.move():this.stay()
-        fw.audio.play("modechange")
+        fw.audio.play("modechange",0.2)
     }
     appearEnemy(){
         if(this.isStay) this.count_enemy++
