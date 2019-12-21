@@ -2,7 +2,7 @@ import * as fw from "./framework/index"
 import { ZakoHeli, hud, initGameObjects } from "./gobj"
 import { loadSVG } from "./svg"
 import { enemy1, enemy2, enemy3, enemy4, enemy5, enemy6 } from "./enemy"
-
+let tutorialOn:boolean
 function init(){
     loadSVG("svg/player.svg","player",60,60)
     loadSVG("svg/missile.svg","shot",20,20)
@@ -20,13 +20,23 @@ function init(){
     loadSVG("svg/move.svg","move",92,30)
     fw.context.fillStyle = "#07071f"
     fw.setTitle("Simon Shoots...")
+    tutorialOn = true
 }
 
 function* stageScript(){
     hud.move()
     for(let i = 0; i < 120; i++) yield;
+    if(tutorialOn){
+        new fw.Text("ドラッグ・↑↓←→で自機の移動\n\n自機停止時ショット発射", 240).pos = {x:fw.width/2,y:fw.height/2}
+        for(let i = 0; i < 240; i++) yield;
+        for(let i = 0; i < 240; i++) yield;
+    }
 
     hud.toggle();{
+        if(tutorialOn){
+            new fw.Text("↑\nStayモード\n敵機の行動パターンを予見", 240).pos = {x:fw.width/2,y:fw.height/4}
+            for(let i = 0; i < 240; i++) yield;
+        }
         enemy1(-25,0,fw.width/3,fw.height/4,0,-10,30,60)
         for(let i = 0; i < 60; i++) yield;
         enemy1(fw.width+25,0,2*fw.width/3,fw.height/4,0,-10,30,0)
@@ -34,12 +44,20 @@ function* stageScript(){
     }
     hud.sweep_bonus = 1000;
     hud.toggle();{
+        if(tutorialOn){
+                new fw.Text("↑\nMoveモード\n予見した行動パターンを回避・迎撃", 240).pos = {x:fw.width/2,y:fw.height/4}
+                for(let i = 0; i < 240; i++) yield;
+        }
         enemy1(-25,0,fw.width/3,fw.height/4,0,-10,30,60)
         for(let i = 0; i < 60; i++) yield;
         enemy1(fw.width+25,0,2*fw.width/3,fw.height/4,0,-10,30,0)
         for(let i = 0; i < 60; i++) yield;
     }
 
+    if(tutorialOn){
+        new fw.Text("赤弾：自機依存の攻撃\n青弾：自機 非 依存攻撃", 240).pos = {x:fw.width/2,y:fw.height/2}
+        for(let i = 0; i < 240; i++) yield;
+    }
     hud.toggle();{
         enemy2(3*fw.width/8,-45,0,5,30)
         enemy2(4*fw.width/8,-45,0,5,30)
@@ -68,6 +86,10 @@ function* stageScript(){
         for(let i = 0; i < 180; i++) yield;
     }
     
+    if(tutorialOn){
+        new fw.Text("矢印付き敵機は自機依存の行動を取る", 240).pos = {x:fw.width/2,y:fw.height/2}
+        for(let i = 0; i < 240; i++) yield;
+    }
     hud.toggle();{
         for(let i = 1; i <= 6; i++) {
             enemy4(i*(fw.width+100)/7-50, -45,5)
@@ -142,6 +164,10 @@ function* stageScript(){
         for(let i = 0; i < 420; i++) yield;
     }
     hud.toggle();
+    if(tutorialOn){
+        new fw.Text("↑\n盾がない状態で被弾すると\nGame Over", 240).pos = {x:fw.width/2,y:fw.height/4}
+        for(let i = 0; i < 240; i++) yield;
+    }
     for(let i = 0; i < 300; i++) yield;
     hud.toggle();
     fw.endGame()

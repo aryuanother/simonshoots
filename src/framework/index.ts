@@ -1,7 +1,8 @@
 import {GameObject, Text} from "./gameobject"
 import * as input from "./input"
+import * as audio from "./audio"
 import {Random} from "./random"
-export {input, Random}
+export {audio, input, Random}
 export * from "./gameobject"
 export * from "./util"
 export * from "./component"
@@ -22,6 +23,7 @@ export let canvas: HTMLCanvasElement
 export let context: CanvasRenderingContext2D
 export let width:number, height:number
 export let title:string
+let h:Howl
 let time_lastframe:number
 let _init:Function, _start:Function, _update:Function, _postUpdate:Function
 
