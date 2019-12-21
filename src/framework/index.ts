@@ -70,7 +70,7 @@ function update(){
     context.fillRect(0,0,width,height)
     switchScene()
     GameObject.showCollision = input.keystate["s"]
-    // will play sounds
+    audio.update()
     if(!!_update) _update()
     // will update global components
     // will update particles as priority 0

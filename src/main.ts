@@ -19,6 +19,8 @@ function init(){
     loadSVG("svg/stay.svg","stay",80,30)
     loadSVG("svg/move.svg","move",92,30)
     fw.context.fillStyle = "#07071f"
+    fw.audio.setSprite("wav/sprite.json")
+    fw.audio.setBPM(125)
     fw.setTitle("Simon Shoots...")
     tutorialOn = true
 }

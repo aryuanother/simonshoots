@@ -1,5 +1,5 @@
 import {Random} from "./framework/random"
-import {GameObject} from "./framework/index"
+import {GameObject, audio} from "./framework/index"
 import {player, Bullet, Muzzle}from "./gobj"
 import {svg} from "./svg"
 import times_ = require('lodash/times')
@@ -27,6 +27,7 @@ export function shootNWay(gobj:GameObject, way:number, spreadAngle:number, aimAn
         a -= da
     })
     new Muzzle(gobj.pos.x, gobj.pos.y, svg[aimType==="Aim"?"bullet_aim":"bullet"].width*2, 20)
+    audio.play("bullet_l2")
 }
 
 export function jetshot(e){
@@ -45,6 +46,7 @@ export function jetshot(e){
         new Bullet(e, sa[i], aa[i], 12, svg["bullet"])
     }
     new Muzzle(e.pos.x, e.pos.y, svg["bullet"].width*4, 20)
+    audio.play("bullet_h")
     e.pos.x = px
 }
 export function penaltyshot_upper(e){
@@ -59,4 +61,5 @@ export function penaltyshot_upper(e){
     new Muzzle(e.pos.x, e.pos.y, svg["bullet"].width*2, 20)
     e.pos.x = px
     e.pos.y = py
+    audio.play("bullet_l1")
 }

@@ -25,6 +25,7 @@ export class Player extends fw.Player{
         this.collision.r = 5
     }
     update(){
+        if(fw.scene == fw.Scene.title) return
         this.collision.r = this.mortal?5:NaN
         super.update()
         
@@ -33,6 +34,7 @@ export class Player extends fw.Player{
         }
         else{
             if(this.mortal && this.vel.x == 0 && this.vel.y == 0 && this.ticks%4 == 0 ){
+                fw.audio.play("shot")
                 let s1 = new Shot(this,32,-Math.PI/2)
                 let s2 = new Shot(this,32,-Math.PI/2)
                 let s3 = new Shot(this,32,-Math.PI/2)
@@ -61,11 +63,13 @@ export class Player extends fw.Player{
             this.count_shield--
             new Explosion(this, hud.pos.x, hud.pos.y+(hud.pos.y > fw.height/2?-45:45), 0, 0, 60)
             new Explosion(this, this.pos.x, this.pos.y, 0, 0, 60)
+            fw.audio.play("playerhit")
             this.setMortal(false)
         }
     }
     destroy(){
         new Explosion(this, this.pos.x, this.pos.y, this.vel.x/2, this.vel.y/2, 60)
+        fw.audio.play("playerdestroyed")
         super.destroy()
     }
     setMortal(mortal:boolean){
@@ -144,6 +148,7 @@ export class Shot extends fw.Shot{
     }
     destroy(){
         super.destroy()
+        this.damage != 1 && fw.audio.play("enemydestroyed_l2")
         new Explosion(this, this.pos.x, this.pos.y, 0, this.damage != 1 ?-2:0, 10*this.damage)
     }
 
@@ -176,6 +181,7 @@ export class HUD extends fw.GameObject{
         if(this.count_bullet_exp > this.count_bullet_act){
             this.score += 100*(this.count_bullet_exp-this.count_bullet_act)
             let upper = (this.isUpper && this.ticks >= 10) || (!this.isUpper && this.ticks < 10)
+            fw.audio.play("bonus")
             new fw.Text("SEALED+"+100*(this.count_bullet_exp-this.count_bullet_act)).pos = {x:3*fw.width/4,y:this.pos.y+(upper?60:-30)}
         }
         // destroy all shots and bullets
@@ -212,6 +218,7 @@ export class HUD extends fw.GameObject{
     }
     toggle(){
         this.isStay?this.move():this.stay()
+        fw.audio.play("modechange")
     }
     appearEnemy(){
         if(this.isStay) this.count_enemy++
@@ -222,6 +229,7 @@ export class HUD extends fw.GameObject{
             if(this.count_enemy == this.count_destroyed){
                 this.score += this.sweep_bonus
                 let upper = (this.isUpper && this.ticks >= 10) || (!this.isUpper && this.ticks < 10)
+                fw.audio.play("bonus")
                 new fw.Text("SWEPT+"+this.sweep_bonus).pos = {x:3*fw.width/4,y:this.pos.y+(upper?60:-30)}
             }
         }
@@ -230,6 +238,7 @@ export class HUD extends fw.GameObject{
         this.isStay?this.count_bullet_exp++:this.count_bullet_act++
     }
     update(){
+        if(fw.scene == fw.Scene.title) return
         if(!this.isUpper && player.pos.y > 2*fw.height/3){
             this.isUpper = true
             this.ticks = 0
@@ -359,6 +368,10 @@ export class EnemyWithToughness extends Enemy{
             this.destroy()
         }
     }
+    destroy(){
+        fw.audio.play("enemydestroyed_h2")
+        super.destroy()
+    }
 }
 
 export class Bullet extends fw.Bullet{
@@ -390,5 +403,9 @@ export class ZakoHeli extends Enemy{
         gobj.context.scale(gobj.scale.x,gobj.scale.y)
         gobj.context.drawImage(this.img_prop, -(this.img_prop.width/2), -(this.img_prop.height/2))
         gobj.context.restore()
+    }
+    destroy(){
+        fw.audio.play("enemydestroyed_l"+fw.random.getInt(1,3))
+        super.destroy()
     }
 }
