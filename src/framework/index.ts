@@ -23,7 +23,6 @@ export let canvas: HTMLCanvasElement
 export let context: CanvasRenderingContext2D
 export let width:number, height:number
 export let title:string
-let h:Howl
 let time_lastframe:number
 let _init:Function, _start:Function, _update:Function, _postUpdate:Function
 
