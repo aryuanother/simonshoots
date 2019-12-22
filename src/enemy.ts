@@ -4,6 +4,11 @@ import { ZakoHeli, player, EnemyWithToughness } from "./gobj"
 import { shootNWay, jetshot, penaltyshot_upper } from "./firecontrol"
 import { svg } from "./svg"
 
+
+export let intervalFrame: number
+export function setBPM(bpm:number){
+    intervalFrame = Math.round((60*fw.targetFramerate)/bpm)
+}
 export function enemy1(ax:number, ay:number,
                        tx:number, ty:number,
                        vx:number, vy:number,
@@ -60,19 +65,19 @@ export function enemy3(x:number, y:number){
     return new ZakoHeli((e)=>{
         e.pos.x = leftside?-25:fw.width+25
         e.pos.y = y
-        new fw.MoveTo(e, x, y, 20)
+        new fw.MoveTo(e, x, y, intervalFrame/2)
         new DoUnderCondition(e, (c)=>{
-            if(c.gobj.ticks%10 < 4){
+            if(c.gobj.ticks%10 < 3){
                 shootNWay(c.gobj, 1, 0,
-                    (Math.PI/2)+(leftside?-1:1)*(2*Math.PI/5)*(c.gobj.ticks-20)/60,
-                    "Fixed", 2,2.5+(c.gobj.ticks-20)/12)
+                    (Math.PI/2)+(leftside?-1:1)*(2*Math.PI/5)*(c.gobj.ticks-(intervalFrame/2))/(2*intervalFrame),
+                    "Fixed", 2,2.5+(c.gobj.ticks-(intervalFrame/2))/(intervalFrame/5))
             }
-            if(c.gobj.ticks == 60){
+            if(c.gobj.ticks == 2*intervalFrame){
                 c.gobj.vel.y = -3
             }
         },
         (c)=>{
-            return c.gobj.ticks >= 20 && c.gobj.ticks <= 60
+            return c.gobj.ticks >= intervalFrame/2 && c.gobj.ticks <= 2*intervalFrame
         })
     })
 }
@@ -94,7 +99,7 @@ export function enemy4(x:number, y:number, speed:number){
                 gobj.vel.x = dx
                 gobj.vel.y = dy
                 gobj["aiming"] = true
-                if(gobj.ticks%60 == 0) shootNWay(c.gobj, 1, 0, 0, "Aim", 1, 0.8*speed)
+                if(gobj.ticks%intervalFrame == 0) shootNWay(c.gobj, 1, 0, 0, "Aim", 1, 0.8*speed)
             }
             else{
                 if(c.gobj.vel.x == 0 && c.gobj.vel.y == 0){
@@ -117,34 +122,19 @@ export function enemy5(x:number, y:number){
         e["aiming"] = true
         
         new DoUnderCondition(e, (c)=>{
-            c.gobj.vel.x = (player.pos.x-c.gobj.pos.x)/40
+            c.gobj.vel.x = (player.pos.x-c.gobj.pos.x)/(intervalFrame/4)
         },
         (c)=>{
-            return c.gobj.ticks < 120
+            return c.gobj.ticks < intervalFrame
         })
         new DoUnderCondition(e, (c)=>{
-            c.gobj.ticks = 0
-            c.gobj.vel.x = c.gobj.vel.y = 0
             c.gobj["aiming"] = false
-            c.gobj.component[c.gobj.component.indexOf(c)] = new DoUnderCondition(c.gobj, (c)=>{
-                let gobj = c.gobj
-                jetshot(gobj)
-                gobj.vel.x = 0
-                gobj.vel.y = -2.5
-            },
-            (c)=>{
-                return c.gobj.ticks == 60
-            })
-            new DoUnderCondition(e, (c)=>{
-                let gobj = c.gobj
-                if(gobj.ticks%10 == 0) penaltyshot_upper(gobj)
-            },
-            (c)=>{
-                return c.gobj.pos.y > player.pos.y
-            })
+            jetshot(c.gobj)
+            c.gobj.vel.x = 0
+            c.gobj.vel.y = -5
         },
         (c)=>{
-            return c.gobj.ticks == 120
+            return c.gobj.ticks == intervalFrame
         })
         new DoUnderCondition(e, (c)=>{
             let gobj = c.gobj
@@ -169,7 +159,7 @@ export function enemy6(ax:number, ay:number,
             let gobj = c.gobj
             jetshot(gobj)
             gobj.vel.x = 0
-            gobj.vel.y = -2.5
+            gobj.vel.y = -5
         },
         (c)=>{
             return c.gobj.ticks == mt+wt

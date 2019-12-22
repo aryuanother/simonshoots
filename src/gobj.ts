@@ -34,7 +34,6 @@ export class Player extends fw.Player{
         }
         else{
             if(this.mortal && this.vel.x == 0 && this.vel.y == 0 && this.ticks%4 == 0 ){
-                fw.audio.play("shot", 0.1)
                 let s1 = new Shot(this,32,-Math.PI/2)
                 let s2 = new Shot(this,32,-Math.PI/2)
                 let s3 = new Shot(this,32,-Math.PI/2)
@@ -138,6 +137,7 @@ export class Shot extends fw.Shot{
         this.image = svg["shot"]
         this.collision.r = 10
         this.priority = 0.3
+        fw.audio.play("shot", 0.08)
     }
     update(){
         if(this.ticks == 1)
@@ -148,7 +148,6 @@ export class Shot extends fw.Shot{
     }
     destroy(){
         super.destroy()
-        this.damage != 1 && fw.audio.play("enemydestroyed_l2",0.1)
         new Explosion(this, this.pos.x, this.pos.y, 0, this.damage != 1 ?-2:0, 10*this.damage)
     }
 
@@ -218,7 +217,7 @@ export class HUD extends fw.GameObject{
     }
     toggle(){
         this.isStay?this.move():this.stay()
-        fw.audio.play("modechange",0.2)
+        fw.audio.play("modechange",0.1)
     }
     appearEnemy(){
         if(this.isStay) this.count_enemy++
@@ -288,7 +287,7 @@ export class HUD extends fw.GameObject{
 
         let score_str = "SCORE:"
         score_str += ("00000000"+this.score).slice(-8)
-        fw.drawText(score_str, 7*fw.width/8, this.pos.y+(upper?15:-15))
+        fw.drawText(score_str, 4*fw.width/5, this.pos.y+(upper?15:-15))
     }
 }
 
@@ -332,6 +331,8 @@ export class Enemy extends fw.Enemy{
     dealDamage(val?:number){
         if(fw.isIn(this.pos.x,0, fw.width) &&fw.isIn(this.pos.y,0, fw.height))
             super.dealDamage(val)
+        
+        val != undefined && val != 1 && fw.audio.play("enemydestroyed_l2",0.08)
         hud.score += 10*val
     }
     draw(){
@@ -358,6 +359,7 @@ export class EnemyWithToughness extends Enemy{
     toughness:number = 60
     constructor(f:(e:Enemy)=>void){
         super(f)
+        fw.audio.play("warning1")
     }
     dealDamage(val:number = 1){
         if(0 <= this.pos.x && this.pos.x <= fw.width &&
@@ -393,6 +395,7 @@ export class ZakoHeli extends Enemy{
         super(f)
         this.image = svg["enemy_heli"]
         this.collision.r = 25
+        fw.audio.play("bullet_l1")
     }
     draw(){
         super.draw()

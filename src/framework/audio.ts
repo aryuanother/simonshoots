@@ -36,10 +36,11 @@ export function update(){
         h?.state() == "loaded" && 
         _.forEach(Object.keys(playlist),key=>{
             let id = h?.play(key)
-            h?.volume(playlist[key].volume, id)
+            h?.fade(0,playlist[key].volume,h?.duration(id)/2,id)
             h?.rate(playlist[key].rate, id)
         })
         playlist = {}
+        
         perviousPlay = now
     }
 }
