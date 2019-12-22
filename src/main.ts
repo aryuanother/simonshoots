@@ -187,7 +187,7 @@ function* stageScript(){
         new fw.Text(text, intervalFrame*4).pos = {x:fw.width/2,y:hud.pos.y < fw.height/2?fw.height/4:3*fw.height/4}
         for(let i = 0; i < intervalFrame*4; i++) yield;
         player.count_shield = 3
-        document.cookie = "tutorialDone=1;expires="+new Date(new Date().setDate(new Date().getDay()+1)).toUTCString()
+        document.cookie = "tutorialDone=1;expires="+new Date(new Date().setDate(new Date().getDate()+1)).toUTCString()
         tutorialOn = false
     }
 
