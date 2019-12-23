@@ -42,9 +42,9 @@ function* stageScript(){
             new fw.Text(text, intervalFrame*4).pos = {x:fw.width/2,y:hud.pos.y < fw.height/2?fw.height/4:3*fw.height/4}
             for(let i = 0; i < intervalFrame*4; i++) yield;
         }
-        enemy1(-25,0,fw.width/3,fw.height/4,0,-10,intervalFrame,intervalFrame*2)
+        enemy1(-25,0,fw.width/3,fw.height/4,-8,8,intervalFrame,intervalFrame*2)
         for(let i = 0; i < intervalFrame; i++) yield;
-        enemy1(fw.width+25,0,2*fw.width/3,fw.height/4,0,-10,intervalFrame,intervalFrame)
+        enemy1(fw.width+25,0,2*fw.width/3,fw.height/4,8,8,intervalFrame,intervalFrame)
         for(let i = 0; i < intervalFrame*3; i++) yield;
     }
     hud.sweep_bonus = 1000;
@@ -56,9 +56,9 @@ function* stageScript(){
             new fw.Text(text, intervalFrame*4).pos = {x:fw.width/2,y:hud.pos.y < fw.height/2?fw.height/4:3*fw.height/4}
             for(let i = 0; i < intervalFrame*4; i++) yield;
         }
-        enemy1(-25,0,fw.width/3,fw.height/4,0,-10,intervalFrame,intervalFrame*2)
+        enemy1(-25,0,fw.width/3,fw.height/4,-8,8,intervalFrame,intervalFrame*2)
         for(let i = 0; i < intervalFrame; i++) yield;
-        enemy1(fw.width+25,0,2*fw.width/3,fw.height/4,0,-10,intervalFrame,intervalFrame)
+        enemy1(fw.width+25,0,2*fw.width/3,fw.height/4,8,8,intervalFrame,intervalFrame)
         for(let i = 0; i < intervalFrame*3; i++) yield;
     }
 
@@ -108,7 +108,7 @@ function* stageScript(){
     }
     hud.toggle();{
         for(let i = 1; i <= 8; i++) {
-            enemy4(i*(fw.width+100)/9-50, -45,5)
+            enemy4(i*(fw.width+100)/9-50, -45,8)
             for(let j = 0; j < intervalFrame/4; j++) yield;
         }
         for(let i = 0; i < intervalFrame*2; i++) yield;
@@ -116,7 +116,7 @@ function* stageScript(){
     hud.sweep_bonus = 2000;
     hud.toggle();{
         for(let i = 1; i <= 8; i++) {
-            enemy4(i*(fw.width+100)/9-50, -45,5)
+            enemy4(i*(fw.width+100)/9-50, -45,8)
             for(let j = 0; j < intervalFrame/4; j++) yield;
         }
         for(let i = 0; i < intervalFrame*2; i++) yield;

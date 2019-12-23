@@ -73,7 +73,8 @@ export function enemy3(x:number, y:number){
                     "Fixed", 2,2.5+(c.gobj.ticks-(intervalFrame/2))/(intervalFrame/5))
             }
             if(c.gobj.ticks == 2*intervalFrame){
-                c.gobj.vel.y = -3
+                c.gobj.vel.y = 8
+                c.gobj.vel.x = c.gobj.pos.x < fw.width/2?-8:8
             }
         },
         (c)=>{
