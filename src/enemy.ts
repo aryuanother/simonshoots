@@ -1,7 +1,7 @@
 import * as fw from "./framework/index"
 import {DoUnderCondition, MoveTo } from "./framework/index"
 import { ZakoHeli, player, EnemyWithToughness } from "./gobj"
-import { shootNWay, jetshot, penaltyshot_upper } from "./firecontrol"
+import { shootNWay, jetshot, penaltyshot_upper, shootNWay_enemymid } from "./firecontrol"
 import { svg } from "./svg"
 
 
@@ -175,4 +175,64 @@ export function enemy6(ax:number, ay:number,
         
     })
     
+}
+
+export function enemy7(x:number, y:number, vx:number, vy:number, vx2:number, vy2:number, wt:number, speed:number, way:number){
+    return new ZakoHeli(e=>{
+        e.pos.x = x
+        e.pos.y = y
+        e.vel.x = vx 
+        e.vel.y = vy
+        new DoUnderCondition(e, c=>{
+            shootNWay(c.gobj, way, Math.PI/2, 0, "Aim", 4, speed)
+            e.vel.x = vx2 
+            e.vel.y = vy2
+        },
+        c=>{
+            return c.gobj.ticks == wt
+        })
+    })
+}
+
+export function enemy8(ax:number, ay:number,
+    tx:number, ty:number,
+    mt:number, wt:number){
+    return new EnemyWithToughness((e)=>{
+        e.image = svg["enemy_mid"]
+        e.collision.r = 50
+        e.pos.x = ax
+        e.pos.y = ay
+        new MoveTo(e, tx, ty, mt)
+        new DoUnderCondition(e, (c)=>{
+            shootNWay_enemymid(c.gobj, 2, Math.PI/6, 
+                Math.PI/2+((Math.PI/3)*Math.min(intervalFrame, c.gobj.ticks)/intervalFrame)*Math.sin(2*Math.PI*c.gobj.ticks/(intervalFrame*2)),
+                "Fixed", 2, 4)
+        },
+        (c)=>{
+            return c.gobj.ticks >= mt && c.gobj.ticks %10 == 0
+        })
+        new DoUnderCondition(e, (c)=>{
+            shootNWay_enemymid(c.gobj, 9, 2*Math.PI, 
+                -c.gobj.ticks*Math.PI/40, "Fixed", 2, 4+((c.gobj.ticks-wt)%intervalFrame)/(intervalFrame*4))
+        },
+        (c)=>{
+            return c.gobj.ticks >= mt && (c.gobj.ticks-wt)%intervalFrame > intervalFrame/2 && c.gobj.ticks%10 == 0
+        })
+        new DoUnderCondition(e, (c)=>{
+            c.gobj.vel.x = 0
+            c.gobj.vel.y = -3
+        },
+        (c)=>{
+            return c.gobj.ticks == mt+wt
+        })
+        new DoUnderCondition(e, (c)=>{
+            let gobj = c.gobj
+            if(gobj.ticks%10 == 0) penaltyshot_upper(gobj)
+        },
+        (c)=>{
+            return c.gobj.pos.y > player.pos.y
+        })
+
+    })
+
 }

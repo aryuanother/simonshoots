@@ -1,7 +1,7 @@
 import * as fw from "./framework/index"
 import { ZakoHeli, hud, initGameObjects, player } from "./gobj"
 import { loadSVG } from "./svg"
-import { enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, setBPM, intervalFrame } from "./enemy"
+import { enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, setBPM, intervalFrame, enemy7, enemy8 } from "./enemy"
 let tutorialOn:boolean
 function init(){
     loadSVG("svg/player.svg","player",60,60)
@@ -179,7 +179,6 @@ function* stageScript(){
         enemy6(fw.width+90,3*fw.height/4,3*fw.width/4,fw.height/2,intervalFrame,intervalFrame*3).toughness = intervalFrame*2
         for(let i = 0; i < intervalFrame*6; i++) yield;
     }
-    hud.toggle();
     if(tutorialOn){
         let text = "盾がない状態で被弾すると\nGame Over"
         if(hud.pos.y < fw.height/2) text = "↑\n"+text
@@ -190,9 +189,73 @@ function* stageScript(){
         document.cookie = "tutorialDone=1;expires="+new Date(new Date().setDate(new Date().getDate()+1)).toUTCString()
         tutorialOn = false
     }
-
-    for(let i = 0; i < 300; i++) yield;
-    hud.toggle();
+    
+    hud.toggle();{
+        let rs = new fw.Random()
+        rs.setSeed(562873232)
+        for(let i = 0; i < 8; i++){
+            let vx = 7+rs.get(-1,1)
+            let vy = rs.get(-1,1)
+            if(i == 1 || i == 5){
+                enemy7(-25,rs.get(fw.height/4, fw.height/2),vx, vy, -vx, vy, rs.getInt(5,8), 5, 4)
+            }
+            else{
+                enemy7(fw.width+25,rs.get(fw.height/4, fw.height/2),-vx, vy, -vx, vy, rs.getInt(5,8), 10, 1)
+            }
+            for(let j = 0; j < intervalFrame/2; j++) yield;
+        }
+    }
+    hud.toggle();{
+        let rs = new fw.Random()
+        rs.setSeed(562873232)
+        for(let i = 0; i < 8; i++){
+            let vx = 7+rs.get(-1,1)
+            let vy = rs.get(-1,1)
+            if(i == 0 || i == 4){
+                enemy7(-25,rs.get(fw.height/4, fw.height/2),vx, vy, -vx, vy, rs.getInt(5,8), 5, 4)
+            }
+            else{
+                enemy7(fw.width+25,rs.get(fw.height/4, fw.height/2),-vx, vy, -vx, vy, rs.getInt(5,8), 10, 1)
+            }
+            for(let j = 0; j < intervalFrame/2; j++) yield;
+        }
+    }
+    hud.toggle();{
+        enemy2(7*fw.width/8,-30,0,10,15)
+        for(let i = 0; i < intervalFrame/2; i++) yield;
+        enemy2(1*fw.width/8,-30,0,10,15)
+        for(let i = 0; i < intervalFrame; i++) yield;
+        enemy2(6*fw.width/8,-30,-8,4,15)
+        for(let i = 0; i < intervalFrame/2; i++) yield;
+        enemy2(2*fw.width/8,-30,8,4,15)
+        for(let i = 0; i < intervalFrame/2; i++) yield;
+        enemy2(5*fw.width/8,-30,-8,4,15)
+        for(let i = 0; i < intervalFrame/2; i++) yield;
+        enemy2(3*fw.width/8,-30,8,4,15)
+        for(let i = 0; i < intervalFrame; i++) yield;
+    }
+    hud.toggle();{
+        enemy2(7*fw.width/8,-30,0,10,15)
+        for(let i = 0; i < intervalFrame/2; i++) yield;
+        enemy2(1*fw.width/8,-30,0,10,15)
+        for(let i = 0; i < intervalFrame; i++) yield;
+        enemy2(6*fw.width/8,-30,-8,4,15)
+        for(let i = 0; i < intervalFrame/2; i++) yield;
+        enemy2(2*fw.width/8,-30,8,4,15)
+        for(let i = 0; i < intervalFrame/2; i++) yield;
+        enemy2(5*fw.width/8,-30,-8,4,15)
+        for(let i = 0; i < intervalFrame/2; i++) yield;
+        enemy2(3*fw.width/8,-30,8,4,15)
+        for(let i = 0; i < intervalFrame; i++) yield;
+    }
+    hud.toggle();{
+        enemy8(fw.width/2, -90, fw.width/2, fw.height/3, intervalFrame, intervalFrame*2)
+        for(let i = 0; i < intervalFrame*4; i++) yield;
+    }
+    hud.toggle();{
+        enemy8(fw.width/2, -90, fw.width/2, fw.height/3, intervalFrame, intervalFrame*2)
+        for(let i = 0; i < intervalFrame*4; i++) yield;
+    }
     fw.endGame()
 }
 let ss: Generator<any, void, unknown>
