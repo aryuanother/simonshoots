@@ -1,7 +1,7 @@
 import * as fw from "./framework/index"
 import { ZakoHeli, hud, initGameObjects, player } from "./gobj"
 import { loadSVG } from "./svg"
-import { enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, setBPM, intervalFrame, enemy7, enemy8 } from "./enemy"
+import { enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, setBPM, intervalFrame, enemy7, enemy2wide } from "./enemy"
 let tutorialOn:boolean
 function init(){
     loadSVG("svg/player.svg","player",60,60)
@@ -191,70 +191,70 @@ function* stageScript(){
     }
     
     hud.toggle();{
-        let rs = new fw.Random()
-        rs.setSeed(562873232)
-        for(let i = 0; i < 8; i++){
-            let vx = 7+rs.get(-1,1)
-            let vy = rs.get(-1,1)
-            if(i == 1 || i == 5){
-                enemy7(-25,rs.get(fw.height/4, fw.height/2),vx, vy, -vx, vy, rs.getInt(5,8), 5, 4)
-            }
-            else{
-                enemy7(fw.width+25,rs.get(fw.height/4, fw.height/2),-vx, vy, -vx, vy, rs.getInt(5,8), 10, 1)
-            }
+        for(let i = 0; i < 4; i++){
+            enemy2wide(fw.width, -25, -8, 4, intervalFrame/8)
             for(let j = 0; j < intervalFrame/2; j++) yield;
         }
-    }
-    hud.toggle();{
-        let rs = new fw.Random()
-        rs.setSeed(562873232)
-        for(let i = 0; i < 8; i++){
-            let vx = 7+rs.get(-1,1)
-            let vy = rs.get(-1,1)
-            if(i == 0 || i == 4){
-                enemy7(-25,rs.get(fw.height/4, fw.height/2),vx, vy, -vx, vy, rs.getInt(5,8), 5, 4)
-            }
-            else{
-                enemy7(fw.width+25,rs.get(fw.height/4, fw.height/2),-vx, vy, -vx, vy, rs.getInt(5,8), 10, 1)
-            }
+        for(let j = 0; j < intervalFrame*2; j++) yield;
+        for(let i = 0; i < 4; i++){
+            enemy2wide(0, -25, 8, 4, intervalFrame/8)
             for(let j = 0; j < intervalFrame/2; j++) yield;
         }
+        for(let j = 0; j < intervalFrame*2; j++) yield;
     }
     hud.toggle();{
-        enemy2(7*fw.width/8,-30,0,10,15)
-        for(let i = 0; i < intervalFrame/2; i++) yield;
-        enemy2(1*fw.width/8,-30,0,10,15)
-        for(let i = 0; i < intervalFrame; i++) yield;
-        enemy2(6*fw.width/8,-30,-8,4,15)
-        for(let i = 0; i < intervalFrame/2; i++) yield;
-        enemy2(2*fw.width/8,-30,8,4,15)
-        for(let i = 0; i < intervalFrame/2; i++) yield;
-        enemy2(5*fw.width/8,-30,-8,4,15)
-        for(let i = 0; i < intervalFrame/2; i++) yield;
-        enemy2(3*fw.width/8,-30,8,4,15)
-        for(let i = 0; i < intervalFrame; i++) yield;
+        for(let i = 0; i < 4; i++){
+            enemy2wide(fw.width, -25, -8, 4, intervalFrame/8)
+            for(let j = 0; j < intervalFrame/2; j++) yield;
+        }
+        for(let j = 0; j < intervalFrame*2; j++) yield;
+        for(let i = 0; i < 4; i++){
+            enemy2wide(0, -25, 8, 4, intervalFrame/8)
+            for(let j = 0; j < intervalFrame/2; j++) yield;
+        }
+        for(let j = 0; j < intervalFrame*2; j++) yield;
     }
     hud.toggle();{
-        enemy2(7*fw.width/8,-30,0,10,15)
-        for(let i = 0; i < intervalFrame/2; i++) yield;
-        enemy2(1*fw.width/8,-30,0,10,15)
+        enemy2wide(5*fw.width/8,-30,0,10,intervalFrame)
         for(let i = 0; i < intervalFrame; i++) yield;
-        enemy2(6*fw.width/8,-30,-8,4,15)
-        for(let i = 0; i < intervalFrame/2; i++) yield;
-        enemy2(2*fw.width/8,-30,8,4,15)
-        for(let i = 0; i < intervalFrame/2; i++) yield;
-        enemy2(5*fw.width/8,-30,-8,4,15)
-        for(let i = 0; i < intervalFrame/2; i++) yield;
-        enemy2(3*fw.width/8,-30,8,4,15)
+        enemy2wide(3*fw.width/8,-30,0,10,intervalFrame)
         for(let i = 0; i < intervalFrame; i++) yield;
-    }
-    hud.toggle();{
-        enemy8(fw.width/2, -90, fw.width/2, fw.height/3, intervalFrame, intervalFrame*2)
+        enemy2wide(5*fw.width/8,-30,0,10,intervalFrame)
+        for(let i = 0; i < intervalFrame; i++) yield;
+        enemy2wide(3*fw.width/8,-30,0,10,intervalFrame)
+        for(let i = 0; i < intervalFrame; i++) yield;
+        enemy2(1*fw.width/8,-30,0,5,30)
+        enemy2(3*fw.width/8,-30,0,5,30)
+        enemy2(5*fw.width/8,-30,0,5,30)
         for(let i = 0; i < intervalFrame*4; i++) yield;
     }
     hud.toggle();{
-        enemy8(fw.width/2, -90, fw.width/2, fw.height/3, intervalFrame, intervalFrame*2)
+        enemy2wide(5*fw.width/8,-30,0,10,intervalFrame)
+        for(let i = 0; i < intervalFrame; i++) yield;
+        enemy2wide(3*fw.width/8,-30,0,10,intervalFrame)
+        for(let i = 0; i < intervalFrame; i++) yield;
+        enemy2wide(5*fw.width/8,-30,0,10,intervalFrame)
+        for(let i = 0; i < intervalFrame; i++) yield;
+        enemy2wide(3*fw.width/8,-30,0,10,intervalFrame)
+        for(let i = 0; i < intervalFrame; i++) yield;
+        enemy2(1*fw.width/8,-30,0,5,30)
+        enemy2(3*fw.width/8,-30,0,5,30)
+        enemy2(5*fw.width/8,-30,0,5,30)
         for(let i = 0; i < intervalFrame*4; i++) yield;
+    }
+    hud.toggle();{
+        enemy7(fw.width/2, -90, fw.width/2, fw.height/3, intervalFrame*4, intervalFrame*5).toughness = intervalFrame*4
+        for(let i = 0; i < intervalFrame*7; i++) yield;
+        enemy2wide(-25, 2*fw.height/8, 10,5,intervalFrame)
+        enemy2wide(fw.width+25,2*fw.height/8,-10,5,intervalFrame)
+        for(let i = 0; i < intervalFrame*3; i++) yield;
+    }
+    hud.toggle();{
+        enemy7(fw.width/2, -90, fw.width/2, fw.height/3, intervalFrame*4, intervalFrame*5).toughness = intervalFrame*4
+        for(let i = 0; i < intervalFrame*7; i++) yield;
+        enemy2wide(-25, 2*fw.height/8, 10,5,intervalFrame)
+        enemy2wide(fw.width+25,2*fw.height/8,-10,5,intervalFrame)
+        for(let i = 0; i < intervalFrame*3; i++) yield;
     }
     fw.endGame()
 }

@@ -63,22 +63,3 @@ export function penaltyshot_upper(e){
     e.pos.y = py
     audio.play("bullet_l1",0.1)
 }
-export function shootNWay_enemymid(gobj:GameObject, way:number, spreadAngle:number, aimAngle:number, aimType:"Fixed"|"Aim", times:number, speed:number){
-    let px = gobj.pos.x
-    let py = gobj.pos.y
-    if(aimAngle < 0){
-        gobj.pos.x -=36
-        gobj.pos.y -= 42
-        shootNWay(gobj, way, spreadAngle, aimAngle, aimType, times, speed)
-        gobj.pos.x +=72
-        shootNWay(gobj, way, spreadAngle, aimAngle, aimType, times, speed)
-    }
-    else{
-        gobj.pos.x -=56
-        shootNWay(gobj, way, spreadAngle, aimAngle, aimType, times, speed)
-        gobj.pos.x +=112
-        shootNWay(gobj, way, spreadAngle, aimAngle, aimType, times, speed)
-    }
-    gobj.pos.x = px
-    gobj.pos.y = py
-}
