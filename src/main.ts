@@ -1,7 +1,7 @@
 import * as fw from "./framework/index"
 import { ZakoHeli, hud, initGameObjects, player } from "./gobj"
 import { loadSVG } from "./svg"
-import { enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, setBPM, intervalFrame, enemy7, enemy2wide } from "./enemy"
+import { enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, setBPM, intervalFrame, enemy7, enemy2wide, WarningBoss1 } from "./enemy"
 let tutorialOn:boolean
 function init(){
     loadSVG("svg/player.svg","player",60,60)
@@ -29,6 +29,7 @@ function init(){
 function* stageScript(){
     hud.move()
     for(let i = 0; i < intervalFrame*2; i++) yield;
+    /*
     if(tutorialOn){
         new fw.Text("ドラッグ・↑↓←→で自機の移動\n\n自機停止時ショット発射", intervalFrame*4).pos = {x:fw.width/2,y:fw.height/2}
         for(let i = 0; i < intervalFrame*8; i++) yield;
@@ -186,6 +187,7 @@ function* stageScript(){
         new fw.Text(text, intervalFrame*4).pos = {x:fw.width/2,y:hud.pos.y < fw.height/2?fw.height/4:3*fw.height/4}
         for(let i = 0; i < intervalFrame*4; i++) yield;
         player.count_shield = 3
+        new fw.Text("SHIELD REFILLED", 60).pos = {x:player.pos.x,y:player.pos.y}
         document.cookie = "tutorialDone=1;expires="+new Date(new Date().setDate(new Date().getDate()+1)).toUTCString()
         tutorialOn = false
     }
@@ -202,6 +204,7 @@ function* stageScript(){
         }
         for(let j = 0; j < intervalFrame*2; j++) yield;
     }
+    hud.sweep_bonus = 4000;
     hud.toggle();{
         for(let i = 0; i < 4; i++){
             enemy2wide(fw.width, -25, -8, 4, intervalFrame/8)
@@ -228,6 +231,7 @@ function* stageScript(){
         enemy2(5*fw.width/8,-30,0,5,30)
         for(let i = 0; i < intervalFrame*4; i++) yield;
     }
+    hud.sweep_bonus = 4000;
     hud.toggle();{
         enemy2wide(5*fw.width/8,-30,0,10,intervalFrame)
         for(let i = 0; i < intervalFrame; i++) yield;
@@ -249,12 +253,44 @@ function* stageScript(){
         enemy2wide(fw.width+25,2*fw.height/8,-10,5,intervalFrame)
         for(let i = 0; i < intervalFrame*3; i++) yield;
     }
+    hud.sweep_bonus = 4000;
     hud.toggle();{
         enemy7(fw.width/2, -90, fw.width/2, fw.height/3, intervalFrame*4, intervalFrame*5).toughness = intervalFrame*4
         for(let i = 0; i < intervalFrame*7; i++) yield;
         enemy2wide(-25, 2*fw.height/8, 10,5,intervalFrame)
         enemy2wide(fw.width+25,2*fw.height/8,-10,5,intervalFrame)
         for(let i = 0; i < intervalFrame*3; i++) yield;
+    }
+    */
+   
+    if(player.count_shield < 3){
+        player.count_shield++
+        new fw.Text("SHIELD REGAINED", 60).pos = {x:player.pos.x,y:player.pos.y}
+    }
+    fw.audio.play("warning2")
+    hud.toggle();{
+        let ea = []
+        for(let i = 0; i < intervalFrame; i++) yield;
+        WarningBoss1(ea)
+        for(let i = 0; i < intervalFrame*2; i++) yield;
+        WarningBoss1(ea)
+        for(let i = 0; i < intervalFrame*2; i++) yield;
+        WarningBoss1(ea)
+        for(let i = 0; i < intervalFrame*2; i++) yield;
+        WarningBoss1(ea)
+        for(let i = 0; i < intervalFrame; i++) yield;
+    }
+    hud.toggle();{
+        let ea = []
+        for(let i = 0; i < intervalFrame; i++) yield;
+        WarningBoss1(ea)
+        for(let i = 0; i < intervalFrame*2; i++) yield;
+        WarningBoss1(ea)
+        for(let i = 0; i < intervalFrame*2; i++) yield;
+        WarningBoss1(ea)
+        for(let i = 0; i < intervalFrame*2; i++) yield;
+        WarningBoss1(ea)
+        for(let i = 0; i < intervalFrame; i++) yield;
     }
     fw.endGame()
 }

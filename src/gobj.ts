@@ -412,3 +412,34 @@ export class ZakoHeli extends Enemy{
         super.destroy()
     }
 }
+export class WarningEnemy extends EnemyWithToughness{
+    message:string
+    constructor(f:(e:Enemy)=>void){
+        super(f)
+        this.image = svg["bullet_aim"]
+        this.collision.r = 15
+        this.toughness = NaN
+    }
+    update(){
+        this.scale.x = this.scale.y = Math.min(1, 0.5+this.ticks/(fw.targetFramerate/2))
+        super.update()
+    }
+    draw(){
+        this.angle = Math.PI/2
+        super.draw()
+        this.angle = 0
+        fw.drawText(this.message, this.pos.x, this.pos.y)
+        {
+            let originFillStyle = this.context.fillStyle
+            let originFont = this.context.font
+            this.context.fillStyle = "blue"
+            this.context.font = "small-caps 24px sans-serif"
+            this.context.textAlign = "center"
+            this.context.textBaseline = "middle"
+            this.context.fillText(this.message,
+                                this.pos.x, this.pos.y)
+            this.context.fillStyle = originFillStyle
+            this.context.font = originFont
+        }
+    }
+}

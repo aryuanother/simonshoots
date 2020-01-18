@@ -1,6 +1,6 @@
 import * as fw from "./framework/index"
 import {DoUnderCondition, MoveTo } from "./framework/index"
-import { ZakoHeli, player, EnemyWithToughness } from "./gobj"
+import { ZakoHeli, player, EnemyWithToughness, Enemy, WarningEnemy } from "./gobj"
 import { shootNWay, jetshot, penaltyshot_upper } from "./firecontrol"
 import { svg } from "./svg"
 import times_ = require('lodash/times')
@@ -182,18 +182,18 @@ export function enemy6(ax:number, ay:number,
 
 export function enemy2wide(x:number, y:number,
     vx:number, vy:number, si:number){
-return new ZakoHeli((e)=>{
-e.pos.x = x
-e.pos.y = y
-e.vel.x = vx 
-e.vel.y = vy
-new fw.DoUnderCondition(e, (c)=>{
-shootNWay(c.gobj, 3, Math.PI/6, 0, "Aim", 1,4)
-}, 
-(c)=>{
-return c.gobj.ticks %  si == 0
-})
-})
+    return new ZakoHeli((e)=>{
+        e.pos.x = x
+        e.pos.y = y
+        e.vel.x = vx 
+        e.vel.y = vy
+        new fw.DoUnderCondition(e, (c)=>{
+            shootNWay(c.gobj, 3, Math.PI/6, 0, "Aim", 1,4)
+        }, 
+        (c)=>{
+            return c.gobj.ticks %  si == 0
+        })
+    })
 }
 
 export function enemy7(ax:number, ay:number,
@@ -250,4 +250,58 @@ export function enemy7(ax:number, ay:number,
 
     })
 
+}
+
+export function WarningBoss1(ea:WarningEnemy[] = []){
+    let message:string
+    switch(ea.length){
+        case 0:
+        default:
+            message = "Warning"
+            for(let i = 0; i < message.length; i++){
+                ea.push(new WarningEnemy(e=>{
+                    e.pos.x
+                        = fw.width/2
+                            -((message.length-1)/2)*45
+                                +i*45
+                    e.pos.y = fw.height/4-20
+                    e["message"] = message[i]
+                }))
+            }
+            fw.audio.play("warning1")
+            break;
+        case 7:
+            message = "aWrniangn"
+            for(let i = 0; i < message.length; i++){
+                ea.push(new WarningEnemy(e=>{
+                    e.pos.x
+                        = fw.width/2
+                            -((message.length-1)/2)*45
+                                +i*45
+                    e.pos.y = fw.height/4+20
+                    e["message"] = message[i]
+                }))
+            }
+            fw.audio.play("warning3")
+            break;
+        case 7+9:
+            if(ea[1].message == "a"){
+                message = "WuelingAWtoiatgn"
+                for(let i = 0; i < ea.length; i++){
+                    ea[i].message = message[i]
+                    shootNWay(ea[i], 4, 3*Math.PI/2, Math.PI/4, "Fixed", 3, 10)
+                }
+                fw.audio.play("warning3")
+            }
+            else{
+                message = "QuellingAutomaton"
+                for(let i = 0; i < ea.length; i++){
+                    ea[i].message = message[i]
+                    ea[i].toughness = 6
+                    new MoveTo(ea[i], player.pos.x, player.pos.y, intervalFrame-1)
+                }
+                fw.audio.play("warning3")
+            }
+            break;
+    }
 }
