@@ -35,7 +35,7 @@ function init(){
 function* stageScript(){
     hud.move()
     for(let i = 0; i < intervalFrame*2; i++) yield;
-    /*
+    
     if(tutorialOn){
         new fw.Text("ドラッグ・↑↓←→で自機の移動\n\n自機停止時ショット発射", intervalFrame*4).pos = {x:fw.width/2,y:fw.height/2}
         for(let i = 0; i < intervalFrame*8; i++) yield;
@@ -267,7 +267,6 @@ function* stageScript(){
         enemy2wide(fw.width+25,2*fw.height/8,-10,5,intervalFrame)
         for(let i = 0; i < intervalFrame*3; i++) yield;
     }
-    */
 
     if(player.count_shield < 3){
         player.count_shield++
