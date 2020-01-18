@@ -1,6 +1,6 @@
 import * as fw from "./framework/index"
 import {DoUnderCondition, MoveTo } from "./framework/index"
-import { ZakoHeli, player, EnemyWithToughness, Enemy, WarningEnemy } from "./gobj"
+import { ZakoHeli, player, EnemyWithToughness, Enemy, WarningEnemy, Boss1 } from "./gobj"
 import { shootNWay, jetshot, penaltyshot_upper } from "./firecontrol"
 import { svg } from "./svg"
 import times_ = require('lodash/times')
@@ -282,6 +282,9 @@ export function WarningBoss1(ea:WarningEnemy[] = []){
                     e["message"] = message[i]
                 }))
             }
+            for(let i = 0; i < ea.length; i++){
+                shootNWay(ea[i], 4, 3*Math.PI/2, Math.PI/4, "Fixed", 3, 10)
+            }
             fw.audio.play("warning3")
             break;
         case 7+9:
@@ -289,12 +292,11 @@ export function WarningBoss1(ea:WarningEnemy[] = []){
                 message = "WuelingAWtoiatgn"
                 for(let i = 0; i < ea.length; i++){
                     ea[i].message = message[i]
-                    shootNWay(ea[i], 4, 3*Math.PI/2, Math.PI/4, "Fixed", 3, 10)
-                }
+                                    }
                 fw.audio.play("warning3")
             }
             else{
-                message = "QuellingAutomaton"
+                message = "QuellerAutomaton"
                 for(let i = 0; i < ea.length; i++){
                     ea[i].message = message[i]
                     ea[i].toughness = 6

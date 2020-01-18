@@ -1,5 +1,5 @@
 import * as fw from "./framework/index"
-import { ZakoHeli, hud, initGameObjects, player } from "./gobj"
+import { ZakoHeli, hud, initGameObjects, player, Boss1 } from "./gobj"
 import { loadSVG } from "./svg"
 import { enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, setBPM, intervalFrame, enemy7, enemy2wide, WarningBoss1 } from "./enemy"
 let tutorialOn:boolean
@@ -18,6 +18,7 @@ function init(){
     loadSVG("svg/shield.svg","shield",30,30)
     loadSVG("svg/stay.svg","stay",80,30)
     loadSVG("svg/move.svg","move",92,30)
+    loadSVG("svg/boss1.svg","boss1",128,128)
     fw.context.fillStyle = "#07071f"
     fw.audio.setSprite("wav/sprite.json")
     fw.audio.setBPM(75)
@@ -262,7 +263,7 @@ function* stageScript(){
         for(let i = 0; i < intervalFrame*3; i++) yield;
     }
     */
-   
+
     if(player.count_shield < 3){
         player.count_shield++
         new fw.Text("SHIELD REGAINED", 60).pos = {x:player.pos.x,y:player.pos.y}
@@ -280,6 +281,7 @@ function* stageScript(){
         WarningBoss1(ea)
         for(let i = 0; i < intervalFrame; i++) yield;
     }
+    hud.sweep_bonus = 4000;
     hud.toggle();{
         let ea = []
         for(let i = 0; i < intervalFrame; i++) yield;
@@ -291,6 +293,39 @@ function* stageScript(){
         for(let i = 0; i < intervalFrame*2; i++) yield;
         WarningBoss1(ea)
         for(let i = 0; i < intervalFrame; i++) yield;
+    }
+    
+    for(let i = 0; i < intervalFrame*2; i++) yield;
+    let boss:Boss1
+    hud.toggle();{
+        boss = new Boss1()
+        boss.enter()
+        for(let i = 0; i < intervalFrame*6; i++) yield;
+        boss.attack(1)
+        for(let i = 0; i < intervalFrame*8; i++) yield;
+        
+    }
+    hud.toggle();{
+        boss = new Boss1()
+        boss.enter()
+        for(let i = 0; i < intervalFrame*6; i++) yield;
+        boss.attack(1)
+        for(let i = 0; i < intervalFrame*8; i++) yield;
+        
+    }
+    while(1){
+        let rs = new Date().getTime()
+        
+        let rg = new fw.Random()
+        rg.setSeed(rs)
+        boss.attack(2, rg) 
+        hud.toggle();{
+            for(let i = 0; i < intervalFrame*16; i++) yield;
+        }
+        rg.setSeed(rs)
+        hud.toggle();{ 
+            for(let i = 0; i < intervalFrame*16; i++) yield;
+        }
     }
     fw.endGame()
 }

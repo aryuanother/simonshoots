@@ -34,8 +34,8 @@ export class MoveTo extends Component{
         this.originY = gobj.pos.y
     }
     update(){
-        if(this.ticks >= this.duration) return
         this.ticks++
+        if(this.ticks > this.duration) return
         let t = this.ticks/this.duration
         let rate = t*t*(3.0-2.0*t)
         this.gobj.pos.x = this.originX*(1-rate)+this.targetX*rate
