@@ -293,30 +293,6 @@ export class HUD extends fw.GameObject{
     }
 }
 
-function duplicateObject(from:Object, to:Object){
-    for(const prop of Object.getOwnPropertyNames(from)){
-        if(Array.isArray(from[prop])){
-            to[prop] = []
-            for(let i in from[prop]){
-                if(Object.prototype.toString.call(from[prop][i]) === "[object Object]"){
-                    to[prop][i] = {}
-                    duplicateObject(from[prop][i], to[prop][i])
-                }
-                else{
-                    from[prop][i] = to[prop][i]
-                }
-            }
-        }
-        else if(Object.prototype.toString.call(from[prop]) === "[object Object]"){
-            to[prop] = {}
-            duplicateObject(from[prop], to[prop])
-        }
-        else{
-            from[prop] = to[prop]
-        }
-    }
-}
-
 function snapShotEnemy(enem: fw.GameObject){
     const clone = Object.create(enem)
     for(const prop of Object.getOwnPropertyNames(enem)){
@@ -469,7 +445,9 @@ export class WarningEnemy extends EnemyWithToughness{
     }
 }
 export class Boss1 extends EnemyWithToughness{
-    children:{r:number, angle:number, ch:string}[] = []
+    children_r:number[] = []
+    children_angle:number[] = []
+    children_ch:string[] = []
     img_child = svg["bullet_aim"]
     constructor(){
         super(e=>{})
@@ -484,33 +462,37 @@ export class Boss1 extends EnemyWithToughness{
     enter(){
         new Boss1Enter(this)
     }
-    attack(idx:number, rg?:fw.Random){
-        this.clearComponent()
+    attack(idx:number){
         switch(idx){
             case 1:
-                new Boss1Attack1(this)
+                this.component=[new Boss1Attack1(this)]
                 break;
             case 2:
-                new Boss1Attack2(this, rg)
+                this.component=[new Boss1Attack2(this)]
                 break;
         }
     }
+    add(r:number, angle:number, ch:string){
+        this.children_r.push(r)
+        this.children_angle.push(angle)
+        this.children_ch.push(ch)
+    }
     shootStraight(times:number, speed:number){
         let originpos = {x:this.pos.x, y:this.pos.y}
-        _.forEach(this.children, c=>{
-            let x = originpos.x+c.r*Math.cos(c.angle),
-                y = originpos.y+c.r*Math.sin(c.angle)
+        _.forEach(this.children_r, (r,i)=>{
+            let x = originpos.x+r*Math.cos(this.children_angle[i]),
+                y = originpos.y+r*Math.sin(this.children_angle[i])
             this.pos.x = x
             this.pos.y = y
-            shootNWay(this, 1, 0, c.angle, "Fixed", times, speed)
+            shootNWay(this, 1, 0, this.children_angle[i], "Fixed", times, speed)
         })
         this.pos = originpos
     }
     shootNWay(way:number, spreadAngle:number, aimAngle:number, aimType:"Aim"|"Fixed", times:number, speed:number){
         let originpos = {x:this.pos.x, y:this.pos.y}
-        _.forEach(this.children, c=>{
-            let x = originpos.x+c.r*Math.cos(c.angle),
-                y = originpos.y+c.r*Math.sin(c.angle)
+        _.forEach(this.children_r, (r,i)=>{
+            let x = originpos.x+r*Math.cos(this.children_angle[i]),
+                y = originpos.y+r*Math.sin(this.children_angle[i])
             this.pos.x = x
             this.pos.y = y
             shootNWay(this, way, spreadAngle, aimAngle, aimType, times, speed)
@@ -518,19 +500,19 @@ export class Boss1 extends EnemyWithToughness{
         this.pos = originpos
     }
     rotate(ang:number){
-        _.forEach(this.children, c=>{
-            c.angle += ang
+        _.forEach(this.children_r, (_,i)=>{
+            this.children_angle[i] += ang
         })
     }
     draw(){
         super.draw()
         let gobj = this
-        _.forEach(this.children, c=>{
-            let x = gobj.pos.x+c.r*Math.cos(c.angle),
-                y = gobj.pos.y+c.r*Math.sin(c.angle)
+        _.forEach(this.children_r, (r,i)=>{
+            let x = gobj.pos.x+r*Math.cos(this.children_angle[i]),
+                y = gobj.pos.y+r*Math.sin(this.children_angle[i])
             gobj.context.save()
             gobj.context.translate(x, y)
-            gobj.context.rotate(c.angle)
+            gobj.context.rotate(this.children_angle[i])
             gobj.context.scale(gobj.scale.x,gobj.scale.y)
             gobj.context.drawImage(this.img_child, -(this.img_child.width/2), -(this.img_child.height/2))
             gobj.context.restore()
@@ -540,7 +522,7 @@ export class Boss1 extends EnemyWithToughness{
             this.context.font = "small-caps 24px sans-serif"
             this.context.textAlign = "center"
             this.context.textBaseline = "middle"
-            this.context.fillText(c.ch, x, y)
+            this.context.fillText(this.children_ch[i], x, y)
             this.context.fillStyle = originFillStyle
             this.context.font = originFont
         })
@@ -550,12 +532,12 @@ class Boss1Enter extends fw.MoveTo{
     gobj:Boss1
     constructor(gobj:Boss1){
         super(gobj, fw.width+100, -100, intervalFrame*4)
-        gobj.children.push({r:80, angle:Math.PI+Math.PI/6, ch:"S"})
-        gobj.children.push({r:80, angle:Math.PI,           ch:"I"})
-        gobj.children.push({r:80, angle:Math.PI-Math.PI/6, ch:"G"})
-        gobj.children.push({r:80, angle:-Math.PI/6,        ch:"H"})
-        gobj.children.push({r:80, angle:0,                 ch:"U"})
-        gobj.children.push({r:80, angle:+Math.PI/6,        ch:"P"})
+        gobj.add(80, Math.PI+Math.PI/6, "S")
+        gobj.add(80, Math.PI          , "I")
+        gobj.add(80, Math.PI-Math.PI/6, "G")
+        gobj.add(80,        -Math.PI/6, "H")
+        gobj.add(80,                 0, "U")
+        gobj.add(80,        +Math.PI/6, "P")
     }
     update(){
         super.update()
@@ -575,12 +557,14 @@ class Boss1Attack1 extends  fw.Component{
     ticks = 0
     constructor(gobj:Boss1){
         super(gobj)
-        console.log("attack2")
+        console.log("attack1 c")
     }
     update(){
+        
+        console.log("attack1 u")
         let angvel = (Math.PI/60)*Math.cos(Math.PI*this.ticks/intervalFrame)
         this.gobj.rotate(angvel)
-        if(this.ticks%4 == 0){
+        if(this.ticks%4 == 0 && (this.ticks%(2*intervalFrame) > 5*intervalFrame/4 || this.ticks%(2*intervalFrame) < intervalFrame)){
             this.gobj.shootStraight(1,10)
         }
         if(this.ticks%(2*intervalFrame) == intervalFrame){
@@ -595,22 +579,31 @@ class Boss1Attack1 extends  fw.Component{
 class Boss1Attack2 extends fw.Component{
     gobj:Boss1
     ticks = 0
+    roundang:number
     angvel:number
     angacc:number
-    constructor(gobj:Boss1, public rg:fw.Random){
+    constructor(gobj:Boss1){
         super(gobj)
+        console.log("attack2 c")
     }
     update(){
+        console.log("attack2 u")
+        if(this.ticks % (intervalFrame/2) == 0 && this.ticks % (intervalFrame*8) > intervalFrame*3){
+            shootNWay(this.gobj, 16, 15*Math.PI/8, this.roundang, "Fixed", 1, 3)
+            this.roundang += 2*(Math.PI/8)/7
+        }
         if(this.ticks % (intervalFrame*8) == 0){
-            this.angacc = this.rg.get(Math.PI/360, Math.PI/180)
+            this.angacc = (Math.PI/360+Math.PI/180)
             this.angvel = 0
+            this.roundang = Math.PI/8
         }
         else if(this.ticks % (intervalFrame*8) < intervalFrame*5){
             this.angvel +=  this.angacc
             this.gobj.rotate(this.angvel)
         }
         else if(this.ticks % (intervalFrame*8) == intervalFrame*5){
-            this.gobj.shootNWay(3, Math.PI/6, this.rg.get(-Math.PI/18,Math.PI/18), "Aim", 5, 5)
+            this.gobj.shootNWay(3, Math.PI/3, 0, "Aim", 5, 5)
+            fw.audio.play("bullet_m")
         }
         this.ticks++
     }

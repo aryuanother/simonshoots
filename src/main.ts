@@ -2,6 +2,11 @@ import * as fw from "./framework/index"
 import { ZakoHeli, hud, initGameObjects, player, Boss1 } from "./gobj"
 import { loadSVG } from "./svg"
 import { enemy1, enemy2, enemy3, enemy4, enemy5, enemy6, setBPM, intervalFrame, enemy7, enemy2wide, WarningBoss1 } from "./enemy"
+import { GameObject } from "./framework/index"
+import forEach_ = require('lodash/forEach')
+let _ = {
+    forEach:forEach_,
+}
 let tutorialOn:boolean
 function init(){
     loadSVG("svg/player.svg","player",60,60)
@@ -295,6 +300,7 @@ function* stageScript(){
         for(let i = 0; i < intervalFrame; i++) yield;
     }
     
+    _.forEach(GameObject.getByCollisionType("enemy"),gobj=>gobj.remove())
     for(let i = 0; i < intervalFrame*2; i++) yield;
     let boss:Boss1
     hud.toggle();{
@@ -316,14 +322,11 @@ function* stageScript(){
     while(1){
         let rs = new Date().getTime()
         
-        let rg = new fw.Random()
-        rg.setSeed(rs)
-        boss.attack(2, rg) 
-        hud.toggle();{
+        boss.attack(2)
+        hud.toggle();{    
             for(let i = 0; i < intervalFrame*16; i++) yield;
         }
-        rg.setSeed(rs)
-        hud.toggle();{ 
+        hud.toggle();{
             for(let i = 0; i < intervalFrame*16; i++) yield;
         }
     }
